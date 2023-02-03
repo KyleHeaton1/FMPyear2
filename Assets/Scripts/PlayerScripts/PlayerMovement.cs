@@ -5,35 +5,40 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
-    public float _moveSpeed;
-    public float _groundDrag;
-    public float _jumpForce;
-    public float _jumpCooldown;
-    public float _airMultiplier;
+    [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _groundDrag;
+    [SerializeField] private float _jumpForce;
+    [SerializeField] private float _jumpCooldown;
+    [SerializeField] private float _airMultiplier;
+
+    [SerializeField] private float _dashForce;
+    [SerializeField] private float _dashCooldown;
+
     bool _readyToJump;
+    bool _readyToDash;
+    bool _canMove;
 
-
-    //can change
-    [Header("Keybinds")]
-    public KeyCode _jumpKey = KeyCode.Space;
-
-    [Header("Ground Check")]
-    public float _playerHeight;
-    public LayerMask _whatIsGround;
+    [Header("Ground Check Settings")]
+    [SerializeField] private float _playerHeight;
+    [SerializeField] private LayerMask _whatIsGround;
     bool _grounded;
 
     Rigidbody _rb;
-    public Transform _orientation;
+    [SerializeField] private Transform _orientation;
     float _horizontalInput;
     float _verticalInput;
 
     Vector3 _moveDirection;
     
+
+
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _rb.freezeRotation = true;
         _readyToJump = true;
+        _readyToDash = true;
     }
     
     void Update()
@@ -41,33 +46,30 @@ public class PlayerMovement : MonoBehaviour
         //raycast generated for ground check, spawned from the players height down. 
         _grounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f+ 0.3f, _whatIsGround);
 
-        MyInput();
         SpeedControl();
+        Inputs();
 
         //slows down object if grounded, if not then the lower the drag means the less it will get slowed down
         if (_grounded)
         {
             _rb.drag = _groundDrag;
         }
-        else
+        else 
         {
             _rb.drag = 0;
         }
     }
-    
-    void FixedUpdate()
-    {
-        Movement();    
-    }
 
-    void MyInput()
+    void Inputs()
     {
+        
         //gets horizontal and vertical input to a float
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
 
+
         //checks the requirements to jump
-        if(Input.GetKey(_jumpKey) && _readyToJump && _grounded)
+        if(Input.GetButton("Jump") && _readyToJump && _grounded)
         {
             //makes it so we cant jump again
             _readyToJump = false;
@@ -78,12 +80,32 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetJump", _jumpCooldown);
         }
+
+        
+        if(Input.GetKey(KeyCode.LeftShift) && _readyToDash)
+        {
+            Debug.Log("ALLah");
+            //makes it so we cant jump again
+            _readyToDash = false;
+
+            //activates jump
+            Dash();
+
+            //waits the cooldown time so we cant just straight after we just finished one
+            Invoke("ResetDash", _dashCooldown);
+        }
+    }
+    
+    void FixedUpdate()
+    {
+        Movement();    
     }
 
     void Movement()
     {
         //calculates the movement direction, the orientation foward is equal to vert input, if vert input is negative then it will change to -forward, same goes for horizontal 
         _moveDirection = _orientation.forward * _verticalInput + _orientation.right * _horizontalInput;
+        
 
         //while on ground
         if(_grounded)
@@ -97,6 +119,8 @@ public class PlayerMovement : MonoBehaviour
             //movement while in air
             _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
         }
+        
+
     }
 
     void SpeedControl()
@@ -118,7 +142,6 @@ public class PlayerMovement : MonoBehaviour
     {
         //resets the y velocity
         _rb.velocity = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
-
         //adds impulse force to rigidbody
         _rb.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
     }
@@ -126,6 +149,15 @@ public class PlayerMovement : MonoBehaviour
     {
         _readyToJump = true;
     }
-
+    void Dash()
+    {
+        _grounded = false;
+        _moveSpeed = 30;
+    }
+    void ResetDash()
+    {
+        _readyToDash = true;
+        _moveSpeed = 5;
+    }
 
 }

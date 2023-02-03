@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2026.0078, g: 1992.2578, b: 2399.3867, a: 1}
+  m_IndirectSpecularColor: {r: 2160.8467, g: 2265.088, b: 3288.3984, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -696,8 +696,9 @@ MonoBehaviour:
   _groundDrag: 3
   _jumpForce: 12
   _jumpCooldown: 0.25
-  _airMultiplier: 0.1
-  _jumpKey: 32
+  _airMultiplier: 3
+  _dashForce: 15
+  _dashCooldown: 0.5
   _playerHeight: 3
   _whatIsGround:
     serializedVersion: 2
@@ -1725,7 +1726,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941466811}
-  m_LocalRotation: {x: 0.09252102, y: 0.00000001765986, z: -0.0000000016409466, w: 0.99571073}
+  m_LocalRotation: {x: 0.09252102, y: -0.000000017659854, z: 0.0000000016409462, w: 0.99571073}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

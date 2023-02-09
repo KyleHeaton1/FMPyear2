@@ -11,13 +11,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _jumpCooldown;
     [SerializeField] private float _airMultiplier;
 
-    [SerializeField] private float _dashForce;
-    [SerializeField] private float _dashCooldown;
-
+    float _baseSpeed;
     bool _readyToJump;
-    bool _readyToDash;
     bool _canMove;
 
+    [Header("Dash Settings")]
+    [SerializeField] private float _dashForce;
+    [SerializeField] private float _dashCooldown;
+    [SerializeField] private int _dashAmount;
+    [SerializeField] private float _dashRefreshTimer;
+    
+    float _baseDashTime;
+    int _dashCount = 0;
+    bool _canDash;
+    bool _readyToDash;
+    
     [Header("Ground Check Settings")]
     [SerializeField] private float _playerHeight;
     [SerializeField] private LayerMask _whatIsGround;
@@ -29,16 +37,13 @@ public class PlayerMovement : MonoBehaviour
     float _verticalInput;
 
     Vector3 _moveDirection;
-    
-
-
 
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _rb.freezeRotation = true;
-        _readyToJump = true;
-        _readyToDash = true;
+        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = true;
+        _baseSpeed = _moveSpeed;
+        _baseDashTime = _dashRefreshTimer;
     }
     
     void Update()
@@ -50,13 +55,21 @@ public class PlayerMovement : MonoBehaviour
         Inputs();
 
         //slows down object if grounded, if not then the lower the drag means the less it will get slowed down
-        if (_grounded)
+        if (_grounded) _rb.drag = _groundDrag;
+        else _rb.drag = 0;
+
+        //if the dash count is bigger or equal to dash amount - start coroutine
+        if(_dashCount >= _dashAmount)StartCoroutine(DashMax());
+    
+        else if(_dashCount <= _dashAmount && _dashCount != 0)
         {
-            _rb.drag = _groundDrag;
-        }
-        else 
-        {
-            _rb.drag = 0;
+            _dashRefreshTimer -= Time.deltaTime;
+
+            if(_dashRefreshTimer <= 0)
+            {
+                DashReplenBetween();
+                _dashRefreshTimer = _baseDashTime;
+            }
         }
     }
 
@@ -66,7 +79,6 @@ public class PlayerMovement : MonoBehaviour
         //gets horizontal and vertical input to a float
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
-
 
         //checks the requirements to jump
         if(Input.GetButton("Jump") && _readyToJump && _grounded)
@@ -81,18 +93,19 @@ public class PlayerMovement : MonoBehaviour
             Invoke("ResetJump", _jumpCooldown);
         }
 
-        
-        if(Input.GetKey(KeyCode.LeftShift) && _readyToDash)
+        if(Input.GetKey(KeyCode.LeftShift) && _readyToDash && _canDash)
         {
-            Debug.Log("ALLah");
-            //makes it so we cant jump again
+            //makes it so we cant dash again
             _readyToDash = false;
 
-            //activates jump
+            //activates dash
             Dash();
 
+            //adds to dash counter
+            _dashCount++;
+
             //waits the cooldown time so we cant just straight after we just finished one
-            Invoke("ResetDash", _dashCooldown);
+            Invoke("DashReplen", _dashCooldown);
         }
     }
     
@@ -105,22 +118,17 @@ public class PlayerMovement : MonoBehaviour
     {
         //calculates the movement direction, the orientation foward is equal to vert input, if vert input is negative then it will change to -forward, same goes for horizontal 
         _moveDirection = _orientation.forward * _verticalInput + _orientation.right * _horizontalInput;
-        
+
+
 
         //while on ground
-        if(_grounded)
-        {
-            //adds force to rigidbody, normalizes direction meaning it keeps vector magintude to 1 keeping the magintude to a small number
-            //adds movement speed to the direction times a constant force along with the force mode
-            _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f, ForceMode.Force);
-        }
-        else
-        {
-            //movement while in air
-            _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
-        }
+        if(_grounded)_rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f, ForceMode.Force);
         
+        //adds force to rigidbody, normalizes direction meaning it keeps vector magintude to 1 keeping the magintude to a small number
+        //adds movement speed to the direction times a constant force along with the force mode
 
+        //movement while in air
+        else _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
     }
 
     void SpeedControl()
@@ -138,6 +146,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    //Jumping - adds an upward force for the player with delays between each jump
     void Jump()
     {
         //resets the y velocity
@@ -149,15 +158,40 @@ public class PlayerMovement : MonoBehaviour
     {
         _readyToJump = true;
     }
+    
+    //Dashing - lots of varible changes in order to process the correct times for when the player is allowed to dash
     void Dash()
     {
+        //the dash refresh timer is set back to the base time, grounded is set to false and the move speed is increased
+        _dashRefreshTimer = _baseDashTime;
         _grounded = false;
-        _moveSpeed = 30;
+        _moveSpeed = _dashForce;
     }
-    void ResetDash()
+    void DashReplen()
     {
+        //replens dash after dash has been carried out, setting values back to normal
         _readyToDash = true;
-        _moveSpeed = 5;
+        _moveSpeed = _baseSpeed;
     }
 
+    //Dash timers - to manage how the player cannot abuse dashes
+    IEnumerator DashMax()
+    {
+        //count is reset, then we wait a penalty so the player is not allowed to dash for a certain amount of time before next dash
+        _dashCount = 0;
+        _canDash = false;
+        yield return new WaitForSeconds(5);
+        _readyToDash = _canDash = true;
+        _dashRefreshTimer = _baseDashTime;
+    }
+    void DashReplenBetween()
+    {
+        //replen dash if the player has not dashed for a while and has not met max dashes
+        _readyToDash = true;
+        _dashCount = 0;
+    }
+
+    //Ground Pound
+
+    //Laser
 }

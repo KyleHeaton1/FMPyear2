@@ -5,12 +5,16 @@ using UnityEngine;
 public class ThirdPersonCameraControl : MonoBehaviour
 {
     [Header("References")]
-    public Transform orientation;
-    public Transform player;
-    public Transform playerObj;
-    public Rigidbody rb;
+    public Transform _orientation;
+    public Transform _player;
+    public Transform _playerObj;
+    public Rigidbody _rb;
 
-    public float rotationSpeed;
+    public float _rotationSpeed;
+
+    public bool _isLaserMode;
+    public Transform _laserLookAt;
+    public GameObject _thirdPersonCam, _laserCam;
 
     // Start is called before the first frame update
     void Start()
@@ -22,18 +26,38 @@ public class ThirdPersonCameraControl : MonoBehaviour
     void Update()
     {
         // rotate orientation
-        Vector3 viewDir = player.position - new Vector3(transform.position.x, player.position.y, transform.position.z);
-        orientation.forward = viewDir.normalized;
+        Vector3 _viewDir = _player.position - new Vector3(transform.position.x, _player.position.y, transform.position.z);
+        _orientation.forward = _viewDir.normalized;
 
         // roate player object
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        Vector3 inputDir = orientation.forward * verticalInput + orientation.right * horizontalInput;
-
-        if (inputDir != Vector3.zero)
+        if(!_isLaserMode)
         {
-            playerObj.forward = Vector3.Slerp(playerObj.forward, inputDir.normalized, Time.deltaTime * rotationSpeed);
+            SwitchCamera();
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+            Vector3 inputDir = _orientation.forward * verticalInput + _orientation.right * horizontalInput;
+            if (inputDir != Vector3.zero)
+                _playerObj.forward = Vector3.Slerp(_playerObj.forward, inputDir.normalized, Time.deltaTime * _rotationSpeed);
         }
+        else
+        {
+            SwitchCamera();
+            Vector3 _viewDirForLaser = _laserLookAt.position - new Vector3(transform.position.x, _laserLookAt.position.y, transform.position.z);
+            _orientation.forward = _viewDirForLaser.normalized;
+            _playerObj.forward = _viewDirForLaser.normalized;
+        }
+    }
 
+    void SwitchCamera()
+    {
+        _thirdPersonCam.SetActive(false);
+        _laserCam.SetActive(false);
+
+        if(_isLaserMode)
+        {
+            _laserCam.SetActive(true);
+            return;
+        }
+        else _thirdPersonCam.SetActive(true);
     }
 }

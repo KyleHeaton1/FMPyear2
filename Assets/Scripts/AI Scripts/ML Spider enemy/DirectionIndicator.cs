@@ -1,9 +1,7 @@
 using UnityEngine;
 
-namespace Unity.MLAgentsExamples
+public class DirectionIndicator : MonoBehaviour
 {
-    public class DirectionIndicator : MonoBehaviour
-    {
 
         public bool updatedByAgent; //should this be updated by the agent? If not, it will use local settings
         public Transform transformToFollow; //ex: hips or body
@@ -33,5 +31,5 @@ namespace Unity.MLAgentsExamples
             transform.position = new Vector3(t.position.x, m_StartingYPos + heightOffset, t.position.z);
             transform.rotation = t.rotation;
         }
-    }
 }
+

@@ -1,7 +1,5 @@
 using UnityEngine;
 
-namespace Unity.MLAgentsExamples
-{
     /// <summary>
     /// This class contains logic for locomotion agents with joints which might make contact with a target.
     /// By attaching this as a component to those joints, their contact with the ground can be used as
@@ -35,4 +33,4 @@ namespace Unity.MLAgentsExamples
             }
         }
     }
-}
+

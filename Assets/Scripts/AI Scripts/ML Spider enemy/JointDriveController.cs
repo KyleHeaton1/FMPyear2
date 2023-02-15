@@ -3,8 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Unity.MLAgents;
 
-namespace Unity.MLAgentsExamples
-{
+
     /// <summary>
     /// Used to store relevant information for acting and learning for each body part in agent.
     /// </summary>
@@ -186,4 +185,4 @@ namespace Unity.MLAgentsExamples
             }
         }
     }
-}
+

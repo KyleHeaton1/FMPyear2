@@ -1,7 +1,6 @@
 using UnityEngine;
 
-namespace Unity.MLAgentsExamples
-{
+
     /// <summary>
     /// Utility class to allow a stable observation platform.
     /// </summary>
@@ -21,4 +20,4 @@ namespace Unity.MLAgentsExamples
             transform.SetPositionAndRotation(rootBP.position, lookRot);
         }
     }
-}
+

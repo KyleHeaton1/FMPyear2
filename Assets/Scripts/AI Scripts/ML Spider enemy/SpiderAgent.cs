@@ -37,6 +37,10 @@ public class SpiderAgent : Agent
     public Transform TargetPrefab; //Target prefab to use in Dynamic envs
     private Transform m_Target; //Target the agent will walk towards during training.
 
+    [Header("Obstacles")]
+    public GameObject[] _buildings;
+    private GameObject m_obstacle;
+
     [Header("Body Parts")] [Space(10)] public Transform body;
     public Transform leg0Upper;
     public Transform leg0Lower;
@@ -69,6 +73,7 @@ public class SpiderAgent : Agent
     public override void Initialize()
     {
         SpawnTarget(TargetPrefab, transform.position); //spawn target
+        SpawnObstacles(_buildings, transform.position);
 
         m_OrientationCube = GetComponentInChildren<OrientationCubeController>();
         m_DirectionIndicator = GetComponentInChildren<DirectionIndicator>();
@@ -94,6 +99,14 @@ public class SpiderAgent : Agent
     void SpawnTarget(Transform prefab, Vector3 pos)
     {
         m_Target = Instantiate(prefab, pos, Quaternion.identity, transform.parent);
+    }
+
+    void SpawnObstacles(GameObject[] _prefabs, Vector3 _pos)
+    {
+        foreach(GameObject _buildingObstacle in _prefabs)
+        {
+            m_obstacle = Instantiate(_buildingObstacle, _pos, Quaternion.identity, transform.parent);
+        }
     }
 
     /// <summary>
@@ -152,6 +165,11 @@ public class SpiderAgent : Agent
 
         //Add pos of target relative to orientation cube
         sensor.AddObservation(m_OrientationCube.transform.InverseTransformPoint(m_Target.transform.position));
+
+        foreach(GameObject _senseObstacle in _buildings)
+        {
+            sensor.AddObservation(m_OrientationCube.transform.InverseTransformPoint(_senseObstacle.transform.position));
+        }
 
         RaycastHit hit;
         float maxRaycastDist = 10;

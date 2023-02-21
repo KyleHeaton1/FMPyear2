@@ -5,21 +5,49 @@ using UnityEngine;
 
 public class GenerateObstacles : MonoBehaviour
 {
-    public GameObject[] _buildings;
-    public float _spawnRadius;
-    Vector3 _startingPos;
+            [Header("Collider Tag To Detect")]
+        public string tagToDetect = "agent"; //collider tag to detect 
 
-    void OnEnable()
-    {
-        _startingPos = transform.position;
-        foreach(GameObject _building in _buildings)
+        [Header("Target Placement")]
+        public float spawnRadius; //The radius in which a target can be randomly spawned.
+        public bool respawnIfTouched; //Should the target respawn to a different position when touched
+
+        [Header("Target Fell Protection")]
+        public bool respawnIfFallsOffPlatform = true; //If the target falls off the platform, reset the position.
+        public float fallDistance = 5; //distance below the starting height that will trigger a respawn 
+
+
+        private Vector3 m_startingPos; //the starting position of the target
+        
+        // Start is called before the first frame update
+        void OnEnable()
         {
-            var _newTargetPos = _startingPos + (Random.insideUnitSphere * _spawnRadius);
-            _newTargetPos.y = _startingPos.y;
-            transform.position = _newTargetPos;
-            Instantiate(_building);
+            m_startingPos = transform.position;
+            if (respawnIfTouched)
+            {
+                MoveTargetToRandomPosition();
+            }
         }
-    }
 
-    
+        void Update()
+        {
+            if (respawnIfFallsOffPlatform)
+            {
+                if (transform.position.y < m_startingPos.y - fallDistance)
+                {
+                    Debug.Log($"{transform.name} Fell Off Platform");
+                    MoveTargetToRandomPosition();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Moves target to a random position within specified radius.
+        /// </summary>
+        public void MoveTargetToRandomPosition()
+        {
+            var newTargetPos = m_startingPos + (Random.insideUnitSphere * spawnRadius);
+            newTargetPos.y = m_startingPos.y;
+            transform.position = newTargetPos;
+        }
 }

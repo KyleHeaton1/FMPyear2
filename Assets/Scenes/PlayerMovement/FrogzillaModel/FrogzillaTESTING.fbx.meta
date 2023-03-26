@@ -1,0 +1,195 @@
+fileFormatVersion: 2
+guid: e6948796bfb0c1c4083f9002f2edb62d
+ModelImporter:
+  serializedVersion: 22103
+  internalIDToNameTable:
+  - first:
+      74: -6677097957098241892
+    second: metarig|airAttack1
+  - first:
+      74: 5433607235808309420
+    second: metarig|airAttack2
+  - first:
+      74: 6616240289697625316
+    second: metarig|attack1
+  - first:
+      74: -3909301397252985303
+    second: metarig|attack2
+  - first:
+      74: 7802988848643025829
+    second: metarig|dash
+  - first:
+      74: -5697141499765350307
+    second: metarig|Frogpose
+  - first:
+      74: 3113627008774939896
+    second: metarig|groundPound
+  - first:
+      74: -5324238279805231817
+    second: metarig|Idle
+  - first:
+      74: -4231665072520111844
+    second: metarig|jumping
+  - first:
+      74: -5101624609864178308
+    second: metarig|land
+  - first:
+      74: -4874277911421289455
+    second: metarig|laser-Movement
+  - first:
+      74: -8289652885623312106
+    second: metarig|run-Movement
+  - first:
+      74: 6175771070977740694
+    second: metarig|standingLaser
+  - first:
+      74: 5416353106877241573
+    second: metarig|TPOSE
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Frogzilla_Baked_Baked
+    second: {fileID: 2100000, guid: 8a2ead473b44c844a88e046da4d84a7e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: InnerEye
+    second: {fileID: 2100000, guid: 56dd363d8303e634bb096847daf04c10, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: InnerMouth
+    second: {fileID: 2100000, guid: 6c9f2f6c7f5771e418a5a1e004ee2267, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: OuterEye
+    second: {fileID: 2100000, guid: 98923ed801526ca439be976d07f48731, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Skin
+    second: {fileID: 2100000, guid: ffb4a7ff71f93fe4bad47cbf5b2a1470, type: 2}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Frogzilla_Baked_Bake1_PBR_Diffuse
+    second: {fileID: 2800000, guid: ab0949356b6afc944a4538970f28e4cf, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Frogzilla_Baked_Bake1_PBR_Metalness
+    second: {fileID: 2800000, guid: c86478de6a750fe428d993a0fb1b3bb8, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Frogzilla_Baked_Bake1_PBR_Normal
+    second: {fileID: 2800000, guid: 719747f2fb083184b81aebaa39bba63d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: Frogzilla_Baked_Bake1_PBR_Roughness
+    second: {fileID: 2800000, guid: bd99cfd225dfb714c9faa8db5f5b73cc, type: 3}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

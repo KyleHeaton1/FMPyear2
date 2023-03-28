@@ -10,7 +10,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpCooldown;
     [SerializeField] private float _airMultiplier;
-
+    
+    bool _isMoving;
     float _baseSpeed;
     bool _readyToJump;
     bool _canMove;
@@ -29,14 +30,24 @@ public class PlayerMovement : MonoBehaviour
     [Header("Ground Check Settings")]
     [SerializeField] private float _playerHeight;
     [SerializeField] private LayerMask _whatIsGround;
+    
     bool _grounded;
+    bool _readyToLand;
 
     Rigidbody _rb;
+
     [SerializeField] private Transform _orientation;
     float _horizontalInput;
     float _verticalInput;
 
     Vector3 _moveDirection;
+
+    [Header("Other Settings")]
+    [SerializeField] Animator _anim;
+    float _animVelocity = 0;
+    float _veloAcceleration = .1f;
+    float _veloDeceleration = .1f;
+    int _veloHash;
 
     void Start()
     {
@@ -44,10 +55,13 @@ public class PlayerMovement : MonoBehaviour
         _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = true;
         _baseSpeed = _moveSpeed;
         _baseDashTime = _dashRefreshTimer;
+        _veloHash = Animator.StringToHash("velocity");
+        _anim.SetInteger("state", 0);
+        _readyToLand = false;
     }
-    
     void Update()
     {
+        
         //raycast generated for ground check, spawned from the players height down. 
         _grounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f+ 0.3f, _whatIsGround);
 
@@ -55,8 +69,26 @@ public class PlayerMovement : MonoBehaviour
         Inputs();
 
         //slows down object if grounded, if not then the lower the drag means the less it will get slowed down
-        if (_grounded) _rb.drag = _groundDrag;
-        else _rb.drag = 0;
+        //ON GROUND
+        if (_grounded)
+        {
+            _rb.drag = _groundDrag;
+            if(_readyToLand)
+            {
+                ClearMovementAnim();
+                _anim.SetInteger("state", 3);
+                _readyToLand = false;
+            }
+        }
+
+        //IN AIR
+        else
+        {
+            _rb.drag = 0;
+            _readyToLand = true;
+        }
+
+        Debug.Log(_readyToLand);
 
         //if the dash count is bigger or equal to dash amount - start coroutine
         if(_dashCount >= _dashAmount)StartCoroutine(DashMax());
@@ -80,6 +112,9 @@ public class PlayerMovement : MonoBehaviour
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
 
+        if(_horizontalInput != 0 || _verticalInput != 0) _isMoving = true;
+        else _isMoving = false;
+        
         //checks the requirements to jump
         if(Input.GetButton("Jump") && _readyToJump && _grounded)
         {
@@ -88,6 +123,10 @@ public class PlayerMovement : MonoBehaviour
 
             //activates jump
             Jump();
+        
+            ClearMovementAnim();
+
+            _anim.SetInteger("state", 2);
 
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetJump", _jumpCooldown);
@@ -118,17 +157,34 @@ public class PlayerMovement : MonoBehaviour
     {
         //calculates the movement direction, the orientation foward is equal to vert input, if vert input is negative then it will change to -forward, same goes for horizontal 
         _moveDirection = _orientation.forward * _verticalInput + _orientation.right * _horizontalInput;
-
-
-
+        
         //while on ground
-        if(_grounded)_rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f, ForceMode.Force);
+        if(_grounded && _isMoving)
+        {
+            _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f, ForceMode.Force);
+            
+            _anim.SetInteger("state", 1);
+            if (_animVelocity < 1) _animVelocity += _veloAcceleration;      
+            _anim.SetFloat(_veloHash, _animVelocity);     
+        }
+        if(_grounded && !_isMoving)
+        {
+           if(_animVelocity > 0) _animVelocity -=  _veloDeceleration;
+           if(_animVelocity == 0)_anim.SetInteger("state", 0);
+           _anim.SetFloat(_veloHash, _animVelocity);
+        }
         
         //adds force to rigidbody, normalizes direction meaning it keeps vector magintude to 1 keeping the magintude to a small number
         //adds movement speed to the direction times a constant force along with the force mode
 
         //movement while in air
         else _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
+    }
+
+    void ClearMovementAnim()
+    {
+        _animVelocity = 0;
+        _isMoving = false;
     }
 
     void SpeedControl()
@@ -166,6 +222,10 @@ public class PlayerMovement : MonoBehaviour
         _dashRefreshTimer = _baseDashTime;
         _grounded = false;
         _moveSpeed = _dashForce;
+
+
+        _anim.SetInteger("state", 4);
+        ClearMovementAnim();
     }
     void DashReplen()
     {

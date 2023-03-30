@@ -42,6 +42,14 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 _moveDirection;
 
+    [Header("Attack Settings")]
+    [SerializeField] GameObject _attackHitBox;
+    [SerializeField] int _damage;
+    [SerializeField] float _attackCooldown;
+    bool _readyToAttack;
+    bool _opisiteAttackAnim;
+
+
     [Header("Other Settings")]
     [SerializeField] Animator _anim;
     float _animVelocity = 0;
@@ -49,15 +57,36 @@ public class PlayerMovement : MonoBehaviour
     float _veloDeceleration = .1f;
     int _veloHash;
 
+
+    public enum _States
+    {
+        idle,
+        land,
+        midair,
+        laser,
+        groundPound,
+        attack1,
+        attack2,
+        airAttack1,
+        airAttack2,
+        dash,
+        jump,
+        damage,
+        runnning
+    }
+
+    public _States _state;
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = true;
+        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = true;
         _baseSpeed = _moveSpeed;
         _baseDashTime = _dashRefreshTimer;
         _veloHash = Animator.StringToHash("velocity");
         _anim.SetInteger("state", 0);
         _readyToLand = false;
+        _state = _States.idle;
     }
     void Update()
     {
@@ -67,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
 
         SpeedControl();
         Inputs();
+        ProcessAnims();
 
         //slows down object if grounded, if not then the lower the drag means the less it will get slowed down
         //ON GROUND
@@ -75,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
             _rb.drag = _groundDrag;
             if(_readyToLand)
             {
-                ClearMovementAnim();
+                _state = _States.land;
                 _anim.SetInteger("state", 3);
                 _readyToLand = false;
             }
@@ -86,6 +116,8 @@ public class PlayerMovement : MonoBehaviour
         {
             _rb.drag = 0;
             _readyToLand = true;
+            _state = _States.midair;
+            _isMoving = false;
         }
 
         Debug.Log(_readyToLand);
@@ -112,8 +144,16 @@ public class PlayerMovement : MonoBehaviour
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
 
-        if(_horizontalInput != 0 || _verticalInput != 0) _isMoving = true;
-        else _isMoving = false;
+        if(_horizontalInput != 0 || _verticalInput != 0)
+        {
+            _isMoving = true;
+            _state = _States.runnning;
+        }
+        else
+        {
+            _isMoving = false;
+            _state = _States.idle;
+        } 
         
         //checks the requirements to jump
         if(Input.GetButton("Jump") && _readyToJump && _grounded)
@@ -123,10 +163,8 @@ public class PlayerMovement : MonoBehaviour
 
             //activates jump
             Jump();
-        
-            ClearMovementAnim();
 
-            _anim.SetInteger("state", 2);
+            _state = _States.jump;
 
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetJump", _jumpCooldown);
@@ -140,11 +178,28 @@ public class PlayerMovement : MonoBehaviour
             //activates dash
             Dash();
 
+            _state = _States.dash;
+
             //adds to dash counter
             _dashCount++;
 
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("DashReplen", _dashCooldown);
+        }
+
+
+        if(Input.GetMouseButtonDown(0) && _readyToAttack)
+        {
+
+            
+            //makes it so we cant attack again
+            _readyToAttack = false;
+
+            //activates attack
+            Attack();
+
+            //waits the cooldown time so we cant just straight after we just finished one
+            Invoke("ResetAttack", _attackCooldown);
         }
     }
     
@@ -163,14 +218,14 @@ public class PlayerMovement : MonoBehaviour
         {
             _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f, ForceMode.Force);
             
-            _anim.SetInteger("state", 1);
+            _state = _States.runnning;
             if (_animVelocity < 1) _animVelocity += _veloAcceleration;      
             _anim.SetFloat(_veloHash, _animVelocity);     
         }
         if(_grounded && !_isMoving)
         {
            if(_animVelocity > 0) _animVelocity -=  _veloDeceleration;
-           if(_animVelocity == 0)_anim.SetInteger("state", 0);
+           if(_animVelocity == 0)  _state = _States.idle;
            _anim.SetFloat(_veloHash, _animVelocity);
         }
         
@@ -179,12 +234,6 @@ public class PlayerMovement : MonoBehaviour
 
         //movement while in air
         else _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
-    }
-
-    void ClearMovementAnim()
-    {
-        _animVelocity = 0;
-        _isMoving = false;
     }
 
     void SpeedControl()
@@ -222,10 +271,6 @@ public class PlayerMovement : MonoBehaviour
         _dashRefreshTimer = _baseDashTime;
         _grounded = false;
         _moveSpeed = _dashForce;
-
-
-        _anim.SetInteger("state", 4);
-        ClearMovementAnim();
     }
     void DashReplen()
     {
@@ -251,7 +296,62 @@ public class PlayerMovement : MonoBehaviour
         _dashCount = 0;
     }
 
+    //attacking
+    void Attack()
+    {
+        _attackHitBox.SetActive(true);
+        if(_opisiteAttackAnim)
+        {
+            if(_grounded) 
+            {
+                _readyToJump = false;
+                _state =_States.attack1;
+            }
+            else _state =_States.airAttack1;               
+            _opisiteAttackAnim = false;
+        }
+        else 
+        {
+            if(_grounded)
+            {
+                _state =_States.attack2;
+                _readyToJump = false;
+            }
+            else _state =_States.airAttack2;               
+            _opisiteAttackAnim = true;
+        }
+        
+    }
+    void ResetAttack()
+    {
+        _readyToAttack = true;
+        if(_grounded)_readyToJump = true;
+    }
+    public void ResetAttackHitBox()
+    {
+        _attackHitBox.SetActive(false);
+    }
+
     //Ground Pound
 
     //Laser
+
+
+    void ProcessAnims()
+    {
+        //movement anims
+        if(_state == _States.idle) _anim.SetInteger("state", 0);
+        if(_state == _States.runnning) _anim.SetInteger("state", 1);
+        if(_state == _States.jump) _anim.SetInteger("state", 2);
+        if(_state == _States.land) _anim.SetInteger("state", 3);
+        if(_state == _States.dash) _anim.SetInteger("state", 4);
+        if(_state == _States.midair) _anim.SetInteger("state", 5);
+
+        //action anims
+        if(_state == _States.attack1) _anim.SetInteger("state", 6);
+        if(_state == _States.attack2) _anim.SetInteger("state", 7);
+        if(_state == _States.airAttack1) _anim.SetInteger("state", 8);
+        if(_state == _States.airAttack2) _anim.SetInteger("state", 9);
+
+    }
 }

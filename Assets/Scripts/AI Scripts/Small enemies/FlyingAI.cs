@@ -18,8 +18,8 @@ public class FlyingAI : MonoBehaviour
 	[SerializeField] private float _rayRange = 2;
 
  
-    private float _initialDistanceToTarget;
-    private float _distanceToTarget;
+    [HideInInspector] [SerializeField] private float _initialDistanceToTarget;
+    [HideInInspector] [SerializeField] private float _distanceToTarget;
  
     public void Start()
     {
@@ -30,22 +30,19 @@ public class FlyingAI : MonoBehaviour
 
     void Update()
     {
+        //have a delay in rotation based on the target speed
 		Quaternion rotTarget = Quaternion.LookRotation(_target.transform.position - this.transform.position);
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, rotTarget, _rotationSpeed * Time.deltaTime);
 
-        // Calculate our distance from target
+        //distance from target
         Vector3 deltaMovement = _target.position - transform.position;
         _distanceToTarget = deltaMovement.magnitude;
  
-        // Update our speed based on our distance from the target
+        //speed based on the target distance
         _targetVelocity = _DistanceVersusSpeedGraph.Evaluate((_initialDistanceToTarget - _distanceToTarget) / _initialDistanceToTarget);
  
-        // If we need to move father than we can in t$$anonymous$$s update, then limit how much we move
-        if (_distanceToTarget > _targetVelocity)
-        {
-            deltaMovement = deltaMovement.normalized * _targetVelocity;
-        }
-
+        //normalize the velocity if the enemy gets close to the player
+        if (_distanceToTarget > _targetVelocity) deltaMovement = deltaMovement.normalized * _targetVelocity;
 
 		Vector3 deltaPosition = Vector3.zero;
 		for (int i = 0; i < _numberOfRays; ++i)
@@ -59,33 +56,12 @@ public class FlyingAI : MonoBehaviour
 			//actual raycasts from the angle area
 			Ray ray = new Ray(this.transform.position, direction);
 			RaycastHit hitInfo;
-			if (Physics.Raycast(ray, out hitInfo, _rayRange))
-			{
-				//moves the player if ray collides with object
-				deltaPosition -= (2.0f / _numberOfRays) * _targetVelocity * direction;
-			}
-			else
-			{
-				//moves the player if ray collides with object
-				deltaPosition += (2.0f / _numberOfRays) * _targetVelocity * direction;
-			}
+            //moves the player if ray collides with object
+			if (Physics.Raycast(ray, out hitInfo, _rayRange)) deltaPosition -= (2.0f / _numberOfRays) * _targetVelocity * direction;
+            //moves the player if ray collides with object
+			else deltaPosition += (2.0f / _numberOfRays) * _targetVelocity * direction;
 			//constant moves player
 			this.transform.position += deltaPosition * Time.deltaTime;
 		}
-
- 
-
-
-        /*
-        float distance = Vector3.Distance(this.transform.position, _target.transform.position);
-        if(distance < 2)
-        {
-            this.transform.position = Vector3.zero;
-        }else
-        {
-            _targetVelocity = 1.5f;
-        }
-        */
-
 	}
 }

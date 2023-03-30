@@ -8,6 +8,8 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(JointDriveController))] // Required to set joint forces
 public class CrawlerAgent : Agent
 {
+    //This is an adapted script from the Unity ML agents examples built for Frogzilla. All credit to the inital build of this script goes to Unity whereas the traning scripts were made by me.
+    //There are some minor changes to this script fit for Frogzilla 
 
     [Header("Walk Speed")]
     [Range(0.1f, m_maxWalkingSpeed)]
@@ -71,19 +73,8 @@ public class CrawlerAgent : Agent
     public Material groundedMaterial;
     public Material unGroundedMaterial;
 
- 
-    
-        
-    
-
     public override void Initialize()
     {
-        //GameObject[] _buildings = GameObject.FindGameObjectsWithTag ("Building");
-        
-
-        //SpawnTarget(TargetPrefab, transform.position); //spawn target
-        //SpawnObstacles(_buildings, transform.position);
-
         m_OrientationCube = GetComponentInChildren<OrientationCubeController>();
         m_DirectionIndicator = GetComponentInChildren<DirectionIndicator>();
         m_JdController = GetComponent<JointDriveController>();
@@ -146,8 +137,6 @@ public class CrawlerAgent : Agent
     /// </summary>
     public override void CollectObservations(VectorSensor sensor)
     {
-
-
         var cubeForward = m_OrientationCube.transform.forward;
 
         //velocity we want to match
@@ -166,9 +155,6 @@ public class CrawlerAgent : Agent
 
         //Add pos of target relative to orientation cube
         sensor.AddObservation(m_OrientationCube.transform.InverseTransformPoint(m_Target.transform.position));
-        
-        
-
 
         RaycastHit hit;
         float maxRaycastDist = 10;
@@ -303,5 +289,4 @@ public class CrawlerAgent : Agent
     {
         AddReward(1f);
     }
-
 }

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2159.8584, g: 2264.252, b: 3287.6523, a: 1}
+  m_IndirectSpecularColor: {r: 2158.8545, g: 2263.4316, b: 3287.0352, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -549,7 +549,7 @@ GameObject:
   - component: {fileID: 298655541}
   - component: {fileID: 298655546}
   m_Layer: 0
-  m_Name: AI
+  m_Name: Flying AI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -569,27 +569,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 1662677310}
   _targetVelocity: 3
-  _numberOfRays: 17
-  _angle: 90
-  _rayRange: 1.38
   _rotationSpeed: 250
-  DistanceVersusSpeed:
+  _DistanceVersusSpeedGraph:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.0041656494
-      value: 1
-      inSlope: -0.9970772
-      outSlope: -0.9970772
+      time: -0.9281845
+      value: 0.9913635
+      inSlope: -0.40182066
+      outSlope: -0.40182066
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 0.0070762634
-      inSlope: -0.9970772
-      outSlope: -0.9970772
+      time: 1.5328522
+      value: 0.0024681091
+      inSlope: -0.40182066
+      outSlope: -0.40182066
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334
@@ -597,6 +594,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _numberOfRays: 17
+  _angle: 90
+  _rayRange: 1.38
   _initialDistanceToTarget: 0
   _distanceToTarget: 0
 --- !u!65 &298655542

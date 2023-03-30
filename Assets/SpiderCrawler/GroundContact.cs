@@ -3,6 +3,7 @@ using Unity.MLAgents;
 
 namespace Unity.MLAgentsExamples
 {
+    //Parts of this script were built by Unity but has been adjusted to work into Frogzilla
     /// <summary>
     /// This class contains logic for locomotion agents with joints which might make contact with the ground.
     /// By attaching this as a component to those joints, their contact with the ground can be used as either
@@ -26,19 +27,22 @@ namespace Unity.MLAgentsExamples
         {
             if (col.transform.CompareTag(k_Ground))
             {
+                //This part of the script is built to make sure that the spider mech gets punished for failure
                 touchingGround = true;
                 if (penalizeGroundContact)
                 {
+                    //We use this to punish or reward the agent for touching the ground
                     agent.SetReward(groundContactPenalty);
                 }
 
+                //If the agent flips or the whole body contacts the floor, the spider will die
                 if (agentDoneOnGroundContact)
                 {
                     //agent.EndEpisode();
                     //DEATH!!
                 }
             }
-
+            //If the spider touches the obstacles, the traning episode will end and the agent will be punished
             if(col.transform.CompareTag("Buildings"))
             {
                 agent.AddReward(-10f);

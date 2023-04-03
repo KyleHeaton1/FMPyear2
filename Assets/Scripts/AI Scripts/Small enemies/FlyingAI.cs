@@ -13,9 +13,9 @@ public class FlyingAI : MonoBehaviour
     [SerializeField] private AnimationCurve _DistanceVersusSpeedGraph;
     
     [Header("Angle Infomation")]
-	[SerializeField] private int _numberOfRays = 17;
-	[SerializeField] private float _angle = 90;
-	[SerializeField] private float _rayRange = 2;
+	[SerializeField] private int _numberOfRays;
+	[SerializeField] private float _angle;
+	[SerializeField] private float _rayRange;
 
  
     [HideInInspector] [SerializeField] private float _initialDistanceToTarget;
@@ -51,7 +51,6 @@ public class FlyingAI : MonoBehaviour
 			Quaternion rotation = this.transform.rotation;
 			Quaternion rotationMod = Quaternion.AngleAxis((i / ((float)_numberOfRays - 1)) * _angle * 2 - _angle, Vector3.up);
 			Vector3 direction = rotation * rotationMod * Vector3.forward;
-			Debug.DrawRay(this.transform.position, direction);
 
 			//actual raycasts from the angle area
 			Ray ray = new Ray(this.transform.position, direction);

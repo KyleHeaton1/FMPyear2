@@ -5,5 +5,5 @@ using UnityEngine;
 public class PlayerAttackAnimReset : MonoBehaviour
 {
     [SerializeField] private GameObject _hitBox;
-    public void ResetAttackHitBox(){_hitBox.SetActive(true);}
+    public void ResetAttackHitBox(){_hitBox.SetActive(false);}
 }

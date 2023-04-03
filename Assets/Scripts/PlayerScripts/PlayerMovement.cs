@@ -51,32 +51,29 @@ public class PlayerMovement : MonoBehaviour
 
 
     [Header("Other Settings")]
-    [SerializeField] Animator _anim;
+    [SerializeField] private Animator _anim;
     float _animVelocity = 0;
     float _veloAcceleration = .1f;
     float _veloDeceleration = .1f;
     int _veloHash;
 
-
+    [SerializeField] private _States _state;
     public enum _States
     {
-        idle,
-        land,
-        midair,
+        idle, //done
+        land, //done
+        midair, 
         laser,
         groundPound,
-        attack1,
-        attack2,
-        airAttack1,
-        airAttack2,
-        dash,
-        jump,
+        attack1, //done
+        attack2, //done
+        airAttack1, //done
+        airAttack2, //done
+        dash, //done
+        jump, //done
         damage,
-        runnning
+        runnning  //done
     }
-
-    public _States _state;
-
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -84,7 +81,6 @@ public class PlayerMovement : MonoBehaviour
         _baseSpeed = _moveSpeed;
         _baseDashTime = _dashRefreshTimer;
         _veloHash = Animator.StringToHash("velocity");
-        _anim.SetInteger("state", 0);
         _readyToLand = false;
         _state = _States.idle;
     }
@@ -136,7 +132,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-
+    void FixedUpdate()
+    {
+        Movement();    
+    }
     void Inputs()
     {
         
@@ -190,8 +189,6 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0) && _readyToAttack)
         {
-
-            
             //makes it so we cant attack again
             _readyToAttack = false;
 
@@ -203,11 +200,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
     
-    void FixedUpdate()
-    {
-        Movement();    
-    }
-
     void Movement()
     {
         //calculates the movement direction, the orientation foward is equal to vert input, if vert input is negative then it will change to -forward, same goes for horizontal 
@@ -250,7 +242,6 @@ public class PlayerMovement : MonoBehaviour
             _rb.velocity = new Vector3(_limitedVel.x, _rb.velocity.y, _limitedVel.z);
         }
     }
-
     //Jumping - adds an upward force for the player with delays between each jump
     void Jump()
     {
@@ -263,7 +254,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _readyToJump = true;
     }
-    
     //Dashing - lots of varible changes in order to process the correct times for when the player is allowed to dash
     void Dash()
     {
@@ -326,10 +316,6 @@ public class PlayerMovement : MonoBehaviour
     {
         _readyToAttack = true;
         if(_grounded)_readyToJump = true;
-    }
-    public void ResetAttackHitBox()
-    {
-        _attackHitBox.SetActive(false);
     }
 
     //Ground Pound

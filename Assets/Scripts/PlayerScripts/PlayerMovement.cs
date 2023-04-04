@@ -116,8 +116,6 @@ public class PlayerMovement : MonoBehaviour
             _isMoving = false;
         }
 
-        Debug.Log(_readyToLand);
-
         //if the dash count is bigger or equal to dash amount - start coroutine
         if(_dashCount >= _dashAmount)StartCoroutine(DashMax());
     

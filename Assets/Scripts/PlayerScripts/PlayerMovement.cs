@@ -46,8 +46,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject _attackHitBox;
     [SerializeField] int _damage;
     [SerializeField] float _attackCooldown;
+    [SerializeField] float _GPCooldown;
+    [SerializeField] float _GPForce;
     bool _readyToAttack;
     bool _opisiteAttackAnim;
+    bool _readyToGP;
 
 
     [Header("Other Settings")]
@@ -77,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = true;
+        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = _readyToGP =true;
         _baseSpeed = _moveSpeed;
         _baseDashTime = _dashRefreshTimer;
         _veloHash = Animator.StringToHash("velocity");
@@ -112,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
         {
             _rb.drag = 0;
             _readyToLand = true;
-            _state = _States.midair;
+            _state = _States.jump;
             _isMoving = false;
         }
 
@@ -184,7 +187,6 @@ public class PlayerMovement : MonoBehaviour
             Invoke("DashReplen", _dashCooldown);
         }
 
-
         if(Input.GetMouseButtonDown(0) && _readyToAttack)
         {
             //makes it so we cant attack again
@@ -196,6 +198,20 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetAttack", _attackCooldown);
         }
+
+        if(Input.GetKey(KeyCode.LeftControl) && _readyToGP)
+        {
+            //makes it so we cant attack again
+            _readyToGP = false;
+
+            //activates attack
+            GroundPound();
+
+            //waits the cooldown time so we cant just straight after we just finished one
+            Invoke("ResetGroundPound", _GPCooldown);
+        }
+
+
     }
     
     void Movement()
@@ -317,8 +333,22 @@ public class PlayerMovement : MonoBehaviour
     }
 
     //Ground Pound
+    void GroundPound()
+    {
+        _state =_States.groundPound;
+        Debug.Log("fart");
+        _rb.AddForce(-transform.up * _GPForce, ForceMode.Impulse);
+    }
+    void ResetGroundPound()
+    {
+        _readyToGP = true;
+    }
 
     //Laser
+    void Laser()
+    {
+
+    }
 
 
     void ProcessAnims()
@@ -336,6 +366,7 @@ public class PlayerMovement : MonoBehaviour
         if(_state == _States.attack2) _anim.SetInteger("state", 7);
         if(_state == _States.airAttack1) _anim.SetInteger("state", 8);
         if(_state == _States.airAttack2) _anim.SetInteger("state", 9);
+        if(_state == _States.groundPound) _anim.SetInteger("state", 10);
 
     }
 }

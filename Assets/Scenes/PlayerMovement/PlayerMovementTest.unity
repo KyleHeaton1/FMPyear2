@@ -868,6 +868,8 @@ MonoBehaviour:
   _attackHitBox: {fileID: 1052160118}
   _damage: 2
   _attackCooldown: 0.8
+  _GPCooldown: 3
+  _GPForce: 25
   _anim: {fileID: 919132148501439714}
   _state: 0
 --- !u!54 &514713128

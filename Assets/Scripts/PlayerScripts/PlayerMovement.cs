@@ -51,9 +51,15 @@ public class PlayerMovement : MonoBehaviour
     bool _readyToAttack;
     bool _opisiteAttackAnim;
     bool _readyToGP;
+    bool _canGP;
 
+    [Header("Laser Settings")]
+    [SerializeField] float _laserTickDamage;
+    [SerializeField] Transform _firePoint;
+    bool _canLaser;
 
     [Header("Other Settings")]
+    [SerializeField] private ThirdPersonCameraControl _camControl;
     [SerializeField] private Animator _anim;
     float _animVelocity = 0;
     float _veloAcceleration = .1f;
@@ -108,13 +114,16 @@ public class PlayerMovement : MonoBehaviour
                 _anim.SetInteger("state", 3);
                 _readyToLand = false;
             }
+
+            _canGP = false;
+            
         }
 
         //IN AIR
         else
         {
             _rb.drag = 0;
-            _readyToLand = true;
+            _readyToLand = _canGP = true;
             _state = _States.jump;
             _isMoving = false;
         }
@@ -199,12 +208,26 @@ public class PlayerMovement : MonoBehaviour
             Invoke("ResetAttack", _attackCooldown);
         }
 
-        if(Input.GetKey(KeyCode.LeftControl) && _readyToGP)
+        if(Input.GetMouseButtonDown(1))
         {
-            //makes it so we cant attack again
+
+
+            SwitchCam(true);
+
+        }
+        if(Input.GetMouseButtonUp(1))
+        {
+            SwitchCam(false);
+        }
+        
+
+
+        if(Input.GetKey(KeyCode.LeftControl) && _readyToGP && _canGP)
+        {
+            //makes it so we cant ground pound again
             _readyToGP = false;
 
-            //activates attack
+            //activates ground pound
             GroundPound();
 
             //waits the cooldown time so we cant just straight after we just finished one
@@ -342,6 +365,12 @@ public class PlayerMovement : MonoBehaviour
     void ResetGroundPound()
     {
         _readyToGP = true;
+    }
+
+    void SwitchCam(bool _switch)
+    {
+        if(_switch) _camControl._isLaserMode = true;
+        else _camControl._isLaserMode = false;
     }
 
     //Laser

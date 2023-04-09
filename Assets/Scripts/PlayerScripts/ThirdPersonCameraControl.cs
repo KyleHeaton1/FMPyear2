@@ -23,7 +23,7 @@ public class ThirdPersonCameraControl : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         // rotate orientation
         Vector3 _viewDir = _player.position - new Vector3(transform.position.x, _player.position.y, transform.position.z);
@@ -36,8 +36,7 @@ public class ThirdPersonCameraControl : MonoBehaviour
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
             Vector3 inputDir = _orientation.forward * verticalInput + _orientation.right * horizontalInput;
-            if (inputDir != Vector3.zero)
-                _playerObj.forward = Vector3.Slerp(_playerObj.forward, inputDir.normalized, Time.deltaTime * _rotationSpeed);
+            if (inputDir != Vector3.zero) _playerObj.forward = Vector3.Slerp(_playerObj.forward, inputDir.normalized, Time.deltaTime * _rotationSpeed);
         }
         else
         {

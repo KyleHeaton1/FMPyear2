@@ -6,6 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float _moveSpeed;
+    [SerializeField] private float _laserMoveSpeed;
     [SerializeField] private float _groundDrag;
     [SerializeField] private float _jumpForce;
     [SerializeField] private float _jumpCooldown;
@@ -56,7 +57,12 @@ public class PlayerMovement : MonoBehaviour
     [Header("Laser Settings")]
     [SerializeField] float _laserTickDamage;
     [SerializeField] Transform _firePoint;
-    bool _canLaser;
+    [SerializeField] GameObject _laserUI;
+    [SerializeField] LineRenderer line;
+    
+    [SerializeField] float rayLength;
+    bool _activeLaser;
+    bool _readyToLaser;
 
     [Header("Other Settings")]
     [SerializeField] private ThirdPersonCameraControl _camControl;
@@ -72,7 +78,8 @@ public class PlayerMovement : MonoBehaviour
         idle, //done
         land, //done
         midair, 
-        laser,
+        laserWalk,
+        laserIdle,
         groundPound,
         attack1, //done
         attack2, //done
@@ -86,7 +93,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = _readyToGP =true;
+        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = _readyToGP = _readyToLaser =true;
         _baseSpeed = _moveSpeed;
         _baseDashTime = _dashRefreshTimer;
         _veloHash = Animator.StringToHash("velocity");
@@ -141,6 +148,7 @@ public class PlayerMovement : MonoBehaviour
                 _dashRefreshTimer = _baseDashTime;
             }
         }
+
     }
     void FixedUpdate()
     {
@@ -156,12 +164,15 @@ public class PlayerMovement : MonoBehaviour
         if(_horizontalInput != 0 || _verticalInput != 0)
         {
             _isMoving = true;
-            _state = _States.runnning;
+            if(_activeLaser)_state = _States.laserWalk;
+            else _state = _States.runnning;
+
         }
         else
         {
             _isMoving = false;
-            _state = _States.idle;
+            if(_activeLaser)_state = _States.laserIdle;
+            else _state = _States.idle;
         } 
         
         //checks the requirements to jump
@@ -196,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
             Invoke("DashReplen", _dashCooldown);
         }
 
-        if(Input.GetMouseButtonDown(0) && _readyToAttack)
+        if(Input.GetMouseButtonDown(0) && _readyToAttack && _camControl._isLaserMode == false)
         {
             //makes it so we cant attack again
             _readyToAttack = false;
@@ -206,18 +217,42 @@ public class PlayerMovement : MonoBehaviour
 
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetAttack", _attackCooldown);
+            _activeLaser = false;
+        }
+
+        if(Input.GetMouseButton(0) && _readyToLaser && _camControl._isLaserMode)
+        {
+            //makes it so we cant attack again
+            //_ready = false;
+            _moveSpeed = _laserMoveSpeed;
+
+            //activates attack
+            Laser();
+
+            _activeLaser = true;
+
+            //waits the cooldown time so we cant just straight after we just finished one
+            //Invoke("ResetAttack", _attackCooldown);
+        }
+        if(_camControl._isLaserMode == false) _activeLaser = false;
+
+        if(Input.GetMouseButtonUp(0))
+        {
+            _activeLaser = false;
         }
 
         if(Input.GetMouseButtonDown(1))
         {
-
-
             SwitchCam(true);
-
+            _laserUI.SetActive(true);
+            _moveSpeed = _laserMoveSpeed;
         }
         if(Input.GetMouseButtonUp(1))
         {
             SwitchCam(false);
+            _laserUI.SetActive(false);
+            _moveSpeed = _baseSpeed;
+            _activeLaser = false;
         }
         
 
@@ -376,9 +411,8 @@ public class PlayerMovement : MonoBehaviour
     //Laser
     void Laser()
     {
-
+        
     }
-
 
     void ProcessAnims()
     {
@@ -396,6 +430,8 @@ public class PlayerMovement : MonoBehaviour
         if(_state == _States.airAttack1) _anim.SetInteger("state", 8);
         if(_state == _States.airAttack2) _anim.SetInteger("state", 9);
         if(_state == _States.groundPound) _anim.SetInteger("state", 10);
+        if(_state == _States.laserIdle) _anim.SetInteger("state", 11);
+        if(_state == _States.laserWalk) _anim.SetInteger("state", 12);
 
     }
 }

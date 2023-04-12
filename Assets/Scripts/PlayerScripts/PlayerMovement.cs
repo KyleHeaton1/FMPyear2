@@ -57,8 +57,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Laser Settings")]
     [SerializeField] float _laserTickDamage;
     [SerializeField] Transform _firePoint;
+    [SerializeField] GameObject _laserPoint;
     [SerializeField] GameObject _laserUI;
-    [SerializeField] LineRenderer line;
+    [SerializeField] LineRenderer _line;
+    [SerializeField] Camera _laserCamera;
     
     [SerializeField] float rayLength;
     bool _activeLaser;
@@ -93,6 +95,7 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _line = GetComponent<LineRenderer>();
         _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = _readyToGP = _readyToLaser =true;
         _baseSpeed = _moveSpeed;
         _baseDashTime = _dashRefreshTimer;
@@ -239,6 +242,7 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetMouseButtonUp(0))
         {
             _activeLaser = false;
+            _line.enabled = false;
         }
 
         if(Input.GetMouseButtonDown(1))
@@ -253,6 +257,7 @@ public class PlayerMovement : MonoBehaviour
             _laserUI.SetActive(false);
             _moveSpeed = _baseSpeed;
             _activeLaser = false;
+            _line.enabled = false;
         }
         
 
@@ -411,8 +416,19 @@ public class PlayerMovement : MonoBehaviour
     //Laser
     void Laser()
     {
-        
+        _line.SetPosition(0, _firePoint.transform.position);
+        RaycastHit _laser;
+        Vector3 _rayOrigin = _firePoint.transform.position;
+        if(Physics.Raycast(_firePoint.transform.position, _laserCamera.transform.forward, out _laser, rayLength))
+        {
+            _laserPoint.transform.LookAt(_laser.point);
+            _line.SetPosition(1, _laser.point);
+        }
+        else _line.SetPosition(1, _rayOrigin + (_laserCamera.transform.forward * rayLength));
+        Debug.DrawRay(_firePoint.transform.position, _laserCamera.transform.forward, Color.green);
+        _line.enabled = true;
     }
+
 
     void ProcessAnims()
     {

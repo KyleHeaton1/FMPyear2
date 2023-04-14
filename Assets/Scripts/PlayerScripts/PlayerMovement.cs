@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -59,8 +60,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Transform _firePoint;
     [SerializeField] GameObject _laserPoint;
     [SerializeField] GameObject _laserUI;
+    [SerializeField] GameObject _laserVFXObj;
+    [SerializeField] VisualEffect _laserVFX;
     [SerializeField] LineRenderer _line;
     [SerializeField] Camera _laserCamera;
+    [SerializeField] GameObject[] _laserEyes;
+    Vector3 _laserVec;
     
     [SerializeField] float rayLength;
     bool _activeLaser;
@@ -155,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        Movement();    
+        Movement(); 
     }
     void Inputs()
     {
@@ -243,6 +248,8 @@ public class PlayerMovement : MonoBehaviour
         {
             _activeLaser = false;
             _line.enabled = false;
+            _laserVFXObj.SetActive(false);
+            foreach (GameObject _e in _laserEyes) _e.SetActive(false);
         }
 
         if(Input.GetMouseButtonDown(1))
@@ -255,13 +262,12 @@ public class PlayerMovement : MonoBehaviour
         {
             SwitchCam(false);
             _laserUI.SetActive(false);
+            _laserVFXObj.SetActive(false);
             _moveSpeed = _baseSpeed;
             _activeLaser = false;
             _line.enabled = false;
+            foreach (GameObject _e in _laserEyes) _e.SetActive(false);
         }
-        
-
-
         if(Input.GetKey(KeyCode.LeftControl) && _readyToGP && _canGP)
         {
             //makes it so we cant ground pound again
@@ -273,10 +279,7 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetGroundPound", _GPCooldown);
         }
-
-
     }
-    
     void Movement()
     {
         //calculates the movement direction, the orientation foward is equal to vert input, if vert input is negative then it will change to -forward, same goes for horizontal 
@@ -297,10 +300,8 @@ public class PlayerMovement : MonoBehaviour
            if(_animVelocity == 0)  _state = _States.idle;
            _anim.SetFloat(_veloHash, _animVelocity);
         }
-        
         //adds force to rigidbody, normalizes direction meaning it keeps vector magintude to 1 keeping the magintude to a small number
         //adds movement speed to the direction times a constant force along with the force mode
-
         //movement while in air
         else _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
     }
@@ -419,17 +420,24 @@ public class PlayerMovement : MonoBehaviour
         _line.SetPosition(0, _firePoint.transform.position);
         RaycastHit _laser;
         Vector3 _rayOrigin = _firePoint.transform.position;
+        foreach (GameObject _e in _laserEyes) _e.SetActive(true);
+        _laserVFXObj.SetActive(true);
+        //float _laserLen = (_rayOrigin)
         if(Physics.Raycast(_firePoint.transform.position, _laserCamera.transform.forward, out _laser, rayLength))
         {
             _laserPoint.transform.LookAt(_laser.point);
             _line.SetPosition(1, _laser.point);
+           _laserVFXObj.transform.LookAt(_laser.point);
         }
-        else _line.SetPosition(1, _rayOrigin + (_laserCamera.transform.forward * rayLength));
+        else 
+        {
+            _line.SetPosition(1, _rayOrigin + (_laserCamera.transform.forward * rayLength));
+           _laserVFXObj.transform.LookAt(_rayOrigin + (_laserCamera.transform.forward * rayLength));
+        }
         Debug.DrawRay(_firePoint.transform.position, _laserCamera.transform.forward, Color.green);
         _line.enabled = true;
+        
     }
-
-
     void ProcessAnims()
     {
         //movement anims
@@ -439,7 +447,6 @@ public class PlayerMovement : MonoBehaviour
         if(_state == _States.land) _anim.SetInteger("state", 3);
         if(_state == _States.dash) _anim.SetInteger("state", 4);
         if(_state == _States.midair) _anim.SetInteger("state", 5);
-
         //action anims
         if(_state == _States.attack1) _anim.SetInteger("state", 6);
         if(_state == _States.attack2) _anim.SetInteger("state", 7);

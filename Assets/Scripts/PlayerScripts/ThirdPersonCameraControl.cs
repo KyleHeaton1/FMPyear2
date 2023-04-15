@@ -5,30 +5,24 @@ using UnityEngine;
 public class ThirdPersonCameraControl : MonoBehaviour
 {
     [Header("References")]
-    public Transform _orientation;
-    public Transform _player;
-    public Transform _playerObj;
-    public Rigidbody _rb;
+    [SerializeField] private Transform _orientation;
+    [SerializeField] private Transform _player;
+    [SerializeField] private Transform _playerObj;
+    [SerializeField] private Rigidbody _rb;
+    [Header("Speed")]
+    [SerializeField] private float _rotationSpeed;
 
-    public float _rotationSpeed;
-
-    public bool _isLaserMode;
-    public Transform _laserLookAt;
-    public GameObject _thirdPersonCam, _laserCam;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //Cursor.lockState = CursorLockMode.Locked;
-    }
-
-    // Update is called once per frame
+    [Header("Alternate Cam Modes")]
+    [SerializeField] public bool _isLaserMode;
+    [SerializeField] private Transform _laserLookAt;
+    [SerializeField] private GameObject _thirdPersonCam;
+    [SerializeField] private GameObject _laserCam;
+    void Start(){Cursor.lockState = CursorLockMode.Locked;}
     void FixedUpdate()
     {
         // rotate orientation
         Vector3 _viewDir = _player.position - new Vector3(transform.position.x, _player.position.y, transform.position.z);
         _orientation.forward = _viewDir.normalized;
-
         // roate player object
         if(!_isLaserMode)
         {
@@ -46,12 +40,10 @@ public class ThirdPersonCameraControl : MonoBehaviour
             _playerObj.forward = _viewDirForLaser.normalized;
         }
     }
-
     void SwitchCamera()
     {
         _thirdPersonCam.SetActive(false);
         _laserCam.SetActive(false);
-
         if(_isLaserMode)
         {
             _laserCam.SetActive(true);

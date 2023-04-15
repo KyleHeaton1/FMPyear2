@@ -61,12 +61,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject _laserPoint;
     [SerializeField] GameObject _laserUI;
     [SerializeField] GameObject _laserVFXObj;
-    [SerializeField] VisualEffect _laserVFX;
     [SerializeField] LineRenderer _line;
     [SerializeField] Camera _laserCamera;
     [SerializeField] GameObject[] _laserEyes;
-    Vector3 _laserVec;
-    
     [SerializeField] float rayLength;
     bool _activeLaser;
     bool _readyToLaser;
@@ -110,14 +107,11 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        
         //raycast generated for ground check, spawned from the players height down. 
         _grounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f+ 0.3f, _whatIsGround);
-
         SpeedControl();
         Inputs();
         ProcessAnims();
-
         //slows down object if grounded, if not then the lower the drag means the less it will get slowed down
         //ON GROUND
         if (_grounded)
@@ -129,9 +123,7 @@ public class PlayerMovement : MonoBehaviour
                 _anim.SetInteger("state", 3);
                 _readyToLand = false;
             }
-
             _canGP = false;
-            
         }
 
         //IN AIR
@@ -142,10 +134,8 @@ public class PlayerMovement : MonoBehaviour
             _state = _States.jump;
             _isMoving = false;
         }
-
         //if the dash count is bigger or equal to dash amount - start coroutine
         if(_dashCount >= _dashAmount)StartCoroutine(DashMax());
-    
         else if(_dashCount <= _dashAmount && _dashCount != 0)
         {
             _dashRefreshTimer -= Time.deltaTime;
@@ -158,13 +148,10 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
-    void FixedUpdate()
-    {
-        Movement(); 
-    }
+    //Processes movment faster than update
+    void FixedUpdate(){Movement();} 
     void Inputs()
     {
-        
         //gets horizontal and vertical input to a float
         _horizontalInput = Input.GetAxisRaw("Horizontal");
         _verticalInput = Input.GetAxisRaw("Vertical");
@@ -182,8 +169,6 @@ public class PlayerMovement : MonoBehaviour
             if(_activeLaser)_state = _States.laserIdle;
             else _state = _States.idle;
         } 
-        
-        //checks the requirements to jump
         if(Input.GetButton("Jump") && _readyToJump && _grounded)
         {
             //makes it so we cant jump again
@@ -197,7 +182,6 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetJump", _jumpCooldown);
         }
-
         if(Input.GetKey(KeyCode.LeftShift) && _readyToDash && _canDash)
         {
             //makes it so we cant dash again
@@ -214,7 +198,6 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("DashReplen", _dashCooldown);
         }
-
         if(Input.GetMouseButtonDown(0) && _readyToAttack && _camControl._isLaserMode == false)
         {
             //makes it so we cant attack again
@@ -227,47 +210,6 @@ public class PlayerMovement : MonoBehaviour
             Invoke("ResetAttack", _attackCooldown);
             _activeLaser = false;
         }
-
-        if(Input.GetMouseButton(0) && _readyToLaser && _camControl._isLaserMode)
-        {
-            //makes it so we cant attack again
-            //_ready = false;
-            _moveSpeed = _laserMoveSpeed;
-
-            //activates attack
-            Laser();
-
-            _activeLaser = true;
-
-            //waits the cooldown time so we cant just straight after we just finished one
-            //Invoke("ResetAttack", _attackCooldown);
-        }
-        if(_camControl._isLaserMode == false) _activeLaser = false;
-
-        if(Input.GetMouseButtonUp(0))
-        {
-            _activeLaser = false;
-            _line.enabled = false;
-            _laserVFXObj.SetActive(false);
-            foreach (GameObject _e in _laserEyes) _e.SetActive(false);
-        }
-
-        if(Input.GetMouseButtonDown(1))
-        {
-            SwitchCam(true);
-            _laserUI.SetActive(true);
-            _moveSpeed = _laserMoveSpeed;
-        }
-        if(Input.GetMouseButtonUp(1))
-        {
-            SwitchCam(false);
-            _laserUI.SetActive(false);
-            _laserVFXObj.SetActive(false);
-            _moveSpeed = _baseSpeed;
-            _activeLaser = false;
-            _line.enabled = false;
-            foreach (GameObject _e in _laserEyes) _e.SetActive(false);
-        }
         if(Input.GetKey(KeyCode.LeftControl) && _readyToGP && _canGP)
         {
             //makes it so we cant ground pound again
@@ -279,7 +221,35 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetGroundPound", _GPCooldown);
         }
+        if(Input.GetMouseButton(0) && _readyToLaser && _camControl._isLaserMode)
+        {
+            //changes the speed of the player while in laser mode (cam zoom mode)
+            _moveSpeed = _laserMoveSpeed;
+            //activates laser
+            Laser();
+            //activaes laser bool making so other anims cant override it
+            _activeLaser = true;
+        }
+        if(_camControl._isLaserMode == false) _activeLaser = false;
+
+        //Camera control change - Mouse button 1 (right click) changes which camera mode the player is on, each varible resets depending on what input has been pressed down or up
+        if(Input.GetMouseButtonDown(1))
+        {
+            SwitchCam(true);
+            _laserUI.SetActive(true);
+            _moveSpeed = _laserMoveSpeed;
+        }
+        if(Input.GetMouseButtonUp(1))
+        {
+            SwitchCam(false);
+            _laserUI.SetActive(false);
+            _moveSpeed = _baseSpeed;
+            StopLaser();
+        }
+        if(Input.GetMouseButtonUp(0)) StopLaser();
     }
+
+    // || PLAYER CORE MOVEMENT ||
     void Movement()
     {
         //calculates the movement direction, the orientation foward is equal to vert input, if vert input is negative then it will change to -forward, same goes for horizontal 
@@ -305,7 +275,6 @@ public class PlayerMovement : MonoBehaviour
         //movement while in air
         else _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f * _airMultiplier, ForceMode.Force);
     }
-
     void SpeedControl()
     {
         //creates a new vector which measures the x and z of the rb velocity
@@ -320,7 +289,10 @@ public class PlayerMovement : MonoBehaviour
             _rb.velocity = new Vector3(_limitedVel.x, _rb.velocity.y, _limitedVel.z);
         }
     }
-    //Jumping - adds an upward force for the player with delays between each jump
+    
+    // || JUMPING ||
+    
+    //adds an upward force for the player with delays between each jump
     void Jump()
     {
         //resets the y velocity
@@ -328,11 +300,11 @@ public class PlayerMovement : MonoBehaviour
         //adds impulse force to rigidbody
         _rb.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
     }
-    void ResetJump()
-    {
-        _readyToJump = true;
-    }
-    //Dashing - lots of varible changes in order to process the correct times for when the player is allowed to dash
+    void ResetJump(){_readyToJump = true;}
+
+    // || DASHING ||
+
+    //lots of varible changes in order to process the correct times for when the player is allowed to dash
     void Dash()
     {
         //the dash refresh timer is set back to the base time, grounded is set to false and the move speed is increased
@@ -364,7 +336,7 @@ public class PlayerMovement : MonoBehaviour
         _dashCount = 0;
     }
 
-    //attacking
+    // || ATTACKING ||
     void Attack()
     {
         _attackHitBox.SetActive(true);
@@ -396,7 +368,7 @@ public class PlayerMovement : MonoBehaviour
         if(_grounded)_readyToJump = true;
     }
 
-    //Ground Pound
+    // || GROUND POUND ||
     void GroundPound()
     {
         _state =_States.groundPound;
@@ -414,7 +386,7 @@ public class PlayerMovement : MonoBehaviour
         else _camControl._isLaserMode = false;
     }
 
-    //Laser
+    // || LASER ||
     void Laser()
     {
         _line.SetPosition(0, _firePoint.transform.position);
@@ -422,7 +394,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 _rayOrigin = _firePoint.transform.position;
         foreach (GameObject _e in _laserEyes) _e.SetActive(true);
         _laserVFXObj.SetActive(true);
-        //float _laserLen = (_rayOrigin)
         if(Physics.Raycast(_firePoint.transform.position, _laserCamera.transform.forward, out _laser, rayLength))
         {
             _laserPoint.transform.LookAt(_laser.point);
@@ -438,6 +409,13 @@ public class PlayerMovement : MonoBehaviour
         _line.enabled = true;
         
     }
+    void StopLaser()
+    {
+        _activeLaser = _line.enabled =false;
+        _laserVFXObj.SetActive(false);
+        foreach (GameObject _e in _laserEyes) _e.SetActive(false);
+    }
+    // || ANIMATIONS ||
     void ProcessAnims()
     {
         //movement anims

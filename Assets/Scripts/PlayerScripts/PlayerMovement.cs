@@ -46,7 +46,9 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Attack Settings")]
     [SerializeField] GameObject _attackHitBox;
-    [SerializeField] int _damage;
+    [SerializeField] GameObject _gpHitBox;
+    [SerializeField] public int _damage;
+    [SerializeField] public int _GPdamage;
     [SerializeField] float _attackCooldown;
     [SerializeField] float _GPCooldown;
     [SerializeField] float _GPForce;
@@ -54,9 +56,10 @@ public class PlayerMovement : MonoBehaviour
     bool _opisiteAttackAnim;
     bool _readyToGP;
     bool _canGP;
+    bool _isGP = false;
 
     [Header("Laser Settings")]
-    [SerializeField] float _laserTickDamage;
+    [SerializeField] int _laserTickDamage;
     [SerializeField] Transform _firePoint;
     [SerializeField] GameObject _laserPoint;
     [SerializeField] GameObject _laserUI;
@@ -75,30 +78,31 @@ public class PlayerMovement : MonoBehaviour
     float _veloAcceleration = .1f;
     float _veloDeceleration = .1f;
     int _veloHash;
+    bool _canJump, _canAttack, _canLaser;
 
     [SerializeField] private _States _state;
     public enum _States
     {
-        idle, //done
-        land, //done
+        idle, 
+        land, 
         midair, 
         laserWalk,
         laserIdle,
         groundPound,
-        attack1, //done
-        attack2, //done
-        airAttack1, //done
-        airAttack2, //done
-        dash, //done
-        jump, //done
+        attack1, 
+        attack2, 
+        airAttack1, 
+        airAttack2, 
+        dash, 
+        jump, 
         damage,
-        runnning  //done
+        runnning  
     }
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _line = GetComponent<LineRenderer>();
-        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = _readyToGP = _readyToLaser =true;
+        _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = _readyToGP = _readyToLaser = _canJump = _canAttack = _canLaser = _canMove = true;
         _baseSpeed = _moveSpeed;
         _baseDashTime = _dashRefreshTimer;
         _veloHash = Animator.StringToHash("velocity");
@@ -119,13 +123,20 @@ public class PlayerMovement : MonoBehaviour
             _rb.drag = _groundDrag;
             if(_readyToLand)
             {
+                if(_isGP)
+                {
+                    _anim.SetFloat("landSpeedMultiply", .5f);
+                    _gpHitBox.SetActive(true);
+                }
+                else _anim.SetFloat("landSpeedMultiply", 1f);
                 _state = _States.land;
                 _anim.SetInteger("state", 3);
-                _readyToLand = false;
+                _anim.SetBool("gpToLand" ,true);
+                _readyToLand =  _isGP = false;
+                RefreshMoves();
             }
             _canGP = false;
         }
-
         //IN AIR
         else
         {
@@ -133,23 +144,22 @@ public class PlayerMovement : MonoBehaviour
             _readyToLand = _canGP = true;
             _state = _States.jump;
             _isMoving = false;
+            _anim.SetBool("gpToLand" ,true);
         }
         //if the dash count is bigger or equal to dash amount - start coroutine
         if(_dashCount >= _dashAmount)StartCoroutine(DashMax());
         else if(_dashCount <= _dashAmount && _dashCount != 0)
         {
             _dashRefreshTimer -= Time.deltaTime;
-
             if(_dashRefreshTimer <= 0)
             {
                 DashReplenBetween();
                 _dashRefreshTimer = _baseDashTime;
             }
         }
-
     }
     //Processes movment faster than update
-    void FixedUpdate(){Movement();} 
+    void FixedUpdate(){if(_canMove)Movement();} 
     void Inputs()
     {
         //gets horizontal and vertical input to a float
@@ -161,7 +171,6 @@ public class PlayerMovement : MonoBehaviour
             _isMoving = true;
             if(_activeLaser)_state = _States.laserWalk;
             else _state = _States.runnning;
-
         }
         else
         {
@@ -169,7 +178,7 @@ public class PlayerMovement : MonoBehaviour
             if(_activeLaser)_state = _States.laserIdle;
             else _state = _States.idle;
         } 
-        if(Input.GetButton("Jump") && _readyToJump && _grounded)
+        if(Input.GetButton("Jump") && _readyToJump && _grounded && _canJump)
         {
             //makes it so we cant jump again
             _readyToJump = false;
@@ -185,7 +194,7 @@ public class PlayerMovement : MonoBehaviour
         if(Input.GetKey(KeyCode.LeftShift) && _readyToDash && _canDash)
         {
             //makes it so we cant dash again
-            _readyToDash = false;
+            _readyToDash = _canLaser = false;
 
             //activates dash
             Dash();
@@ -198,7 +207,7 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("DashReplen", _dashCooldown);
         }
-        if(Input.GetMouseButtonDown(0) && _readyToAttack && _camControl._isLaserMode == false)
+        if(Input.GetMouseButtonDown(0) && _readyToAttack && _camControl._isLaserMode == false && _canAttack)
         {
             //makes it so we cant attack again
             _readyToAttack = false;
@@ -212,21 +221,25 @@ public class PlayerMovement : MonoBehaviour
         }
         if(Input.GetKey(KeyCode.LeftControl) && _readyToGP && _canGP)
         {
+
             //makes it so we cant ground pound again
-            _readyToGP = false;
+            _readyToGP = _canAttack = _canLaser = false;
 
             //activates ground pound
             GroundPound();
 
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetGroundPound", _GPCooldown);
+            
         }
-        if(Input.GetMouseButton(0) && _readyToLaser && _camControl._isLaserMode)
+        if(Input.GetMouseButton(0) && _readyToLaser && _camControl._isLaserMode && _canLaser)
         {
             //changes the speed of the player while in laser mode (cam zoom mode)
             _moveSpeed = _laserMoveSpeed;
+
             //activates laser
             Laser();
+
             //activaes laser bool making so other anims cant override it
             _activeLaser = true;
         }
@@ -238,6 +251,7 @@ public class PlayerMovement : MonoBehaviour
             SwitchCam(true);
             _laserUI.SetActive(true);
             _moveSpeed = _laserMoveSpeed;
+            _readyToJump = false;
         }
         if(Input.GetMouseButtonUp(1))
         {
@@ -245,9 +259,13 @@ public class PlayerMovement : MonoBehaviour
             _laserUI.SetActive(false);
             _moveSpeed = _baseSpeed;
             StopLaser();
+            _readyToJump = true;
         }
         if(Input.GetMouseButtonUp(0)) StopLaser();
     }
+
+    void RefreshMoves(){_canAttack = _canGP = _canJump = _canLaser =  _canMove = true;}
+
 
     // || PLAYER CORE MOVEMENT ||
     void Movement()
@@ -259,7 +277,6 @@ public class PlayerMovement : MonoBehaviour
         if(_grounded && _isMoving)
         {
             _rb.AddForce(_moveDirection.normalized * _moveSpeed * 10f, ForceMode.Force);
-            
             _state = _States.runnning;
             if (_animVelocity < 1) _animVelocity += _veloAcceleration;      
             _anim.SetFloat(_veloHash, _animVelocity);     
@@ -279,7 +296,6 @@ public class PlayerMovement : MonoBehaviour
     {
         //creates a new vector which measures the x and z of the rb velocity
         Vector3 _flatVel = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
-
         //limit velocity if it goes over the movement speed
         if(_flatVel.magnitude > _moveSpeed)
         {
@@ -289,7 +305,6 @@ public class PlayerMovement : MonoBehaviour
             _rb.velocity = new Vector3(_limitedVel.x, _rb.velocity.y, _limitedVel.z);
         }
     }
-    
     // || JUMPING ||
     
     //adds an upward force for the player with delays between each jump
@@ -299,6 +314,7 @@ public class PlayerMovement : MonoBehaviour
         _rb.velocity = new Vector3(_rb.velocity.x, 0f, _rb.velocity.z);
         //adds impulse force to rigidbody
         _rb.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
+        RefreshMoves();
     }
     void ResetJump(){_readyToJump = true;}
 
@@ -366,29 +382,26 @@ public class PlayerMovement : MonoBehaviour
     {
         _readyToAttack = true;
         if(_grounded)_readyToJump = true;
+        _attackHitBox.SetActive(false);
     }
-
     // || GROUND POUND ||
     void GroundPound()
     {
         _state =_States.groundPound;
-        Debug.Log("fart");
+        _canMove = _canAttack =  false;
         _rb.AddForce(-transform.up * _GPForce, ForceMode.Impulse);
+        _readyToLand = _isGP =true;
     }
-    void ResetGroundPound()
-    {
-        _readyToGP = true;
-    }
-
+    void ResetGroundPound() { _readyToGP = true;}
     void SwitchCam(bool _switch)
     {
         if(_switch) _camControl._isLaserMode = true;
         else _camControl._isLaserMode = false;
     }
-
     // || LASER ||
     void Laser()
     {
+        _readyToJump = false;
         _line.SetPosition(0, _firePoint.transform.position);
         RaycastHit _laser;
         Vector3 _rayOrigin = _firePoint.transform.position;
@@ -399,6 +412,8 @@ public class PlayerMovement : MonoBehaviour
             _laserPoint.transform.LookAt(_laser.point);
             _line.SetPosition(1, _laser.point);
            _laserVFXObj.transform.LookAt(_laser.point);
+           Health _destructHealth = _laser.collider.gameObject.GetComponent<Health>();
+           if(_destructHealth != null) _destructHealth.TakeDamage(_laserTickDamage);
         }
         else 
         {
@@ -407,7 +422,6 @@ public class PlayerMovement : MonoBehaviour
         }
         Debug.DrawRay(_firePoint.transform.position, _laserCamera.transform.forward, Color.green);
         _line.enabled = true;
-        
     }
     void StopLaser()
     {
@@ -433,6 +447,5 @@ public class PlayerMovement : MonoBehaviour
         if(_state == _States.groundPound) _anim.SetInteger("state", 10);
         if(_state == _States.laserIdle) _anim.SetInteger("state", 11);
         if(_state == _States.laserWalk) _anim.SetInteger("state", 12);
-
     }
 }

@@ -251,7 +251,7 @@ public class PlayerMovement : MonoBehaviour
             SwitchCam(true);
             _laserUI.SetActive(true);
             _moveSpeed = _laserMoveSpeed;
-            _readyToJump = false;
+            _readyToJump = _canDash = false;
         }
         if(Input.GetMouseButtonUp(1))
         {
@@ -259,7 +259,7 @@ public class PlayerMovement : MonoBehaviour
             _laserUI.SetActive(false);
             _moveSpeed = _baseSpeed;
             StopLaser();
-            _readyToJump = true;
+            _readyToJump = _canDash = true;
         }
         if(Input.GetMouseButtonUp(0)) StopLaser();
     }

@@ -20,12 +20,13 @@ public class ThirdPersonCameraControl : MonoBehaviour
     void Start(){Cursor.lockState = CursorLockMode.Locked;}
     void FixedUpdate()
     {
-        // rotate orientation
-        Vector3 _viewDir = _player.position - new Vector3(transform.position.x, _player.position.y, transform.position.z);
-        _orientation.forward = _viewDir.normalized;
+        Application.targetFrameRate = -1;
         // roate player object
         if(!_isLaserMode)
         {
+            // rotate orientation
+            Vector3 _viewDir = _player.position - new Vector3(transform.position.x, _player.position.y, transform.position.z);
+            _orientation.forward = _viewDir.normalized;
             SwitchCamera();
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");

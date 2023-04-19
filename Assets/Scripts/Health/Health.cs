@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
     [Header ("Health Properties")]
     [SerializeField] private int _startingHealth;
     [SerializeField] private int  _currentHealth;
-    [SerializeField] private HealthSlider _healthBar;
+    [SerializeField] private ValueSlider _healthBar;
     [Space(10)]
 
     [Header ("Death Properties")]
@@ -24,13 +24,13 @@ public class Health : MonoBehaviour
     
     void Start()
     {
-        if(_healthBar != null)_healthBar.SetMaxHealth(_startingHealth);
+        if(_healthBar != null)_healthBar.SetMaxValue(_startingHealth);
         _currentHealth = _startingHealth;
         
     }
     void Update()
     {
-        if(_healthBar != null) _healthBar.SetHealth(_currentHealth);
+        if(_healthBar != null) _healthBar.SetValue(_currentHealth);
         
 
         if(_currentHealth <= 0)

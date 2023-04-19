@@ -52,6 +52,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float _attackCooldown;
     [SerializeField] float _GPCooldown;
     [SerializeField] float _GPForce;
+    [SerializeField] GameObject _GPdecal;
+    [SerializeField] Transform _GPFP;
+    [SerializeField] Material _GPCrackMat;
     bool _readyToAttack;
     bool _opisiteAttackAnim;
     bool _readyToGP;
@@ -127,6 +130,13 @@ public class PlayerMovement : MonoBehaviour
                 {
                     _anim.SetFloat("landSpeedMultiply", .5f);
                     _gpHitBox.SetActive(true);
+
+                    RaycastHit shithit;
+                    if (Physics.Raycast(_GPFP.position, transform.TransformDirection(Vector3.down), out shithit, 1f))
+                    {
+                        GameObject _decalPrefab = Instantiate(_GPdecal, shithit.point, _GPFP.rotation);
+                        Destroy(_decalPrefab, 3);
+                    }
                 }
                 else _anim.SetFloat("landSpeedMultiply", 1f);
                 _state = _States.land;
@@ -391,6 +401,7 @@ public class PlayerMovement : MonoBehaviour
         _canMove = _canAttack =  false;
         _rb.AddForce(-transform.up * _GPForce, ForceMode.Impulse);
         _readyToLand = _isGP =true;
+        // Project
     }
     void ResetGroundPound() { _readyToGP = true;}
     void SwitchCam(bool _switch)

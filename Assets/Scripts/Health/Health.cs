@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Health : MonoBehaviour
 {
     [Header ("Health Properties")]
@@ -16,23 +17,25 @@ public class Health : MonoBehaviour
     [HideInInspector] public bool _dead = false;
     [Space(10)]
 
-    [Header ("Destruction Properties")]
     [SerializeField] private bool _destructible;
+
+    [ConditionalHide("_destructible", true)]
+    [Header ("Destruction Properties")]
+
     [SerializeField] private GameObject _originalObject;
+    [ConditionalHide("_destructible", true)]
     [SerializeField] private GameObject[] _destructParts;
+    [ConditionalHide("_destructible", true)]
     [SerializeField] private float _minExploForce, _maxExploForce, _exploForceRadius;
     
     void Start()
     {
         if(_healthBar != null)_healthBar.SetMaxValue(_startingHealth);
         _currentHealth = _startingHealth;
-        
     }
     void Update()
     {
         if(_healthBar != null) _healthBar.SetValue(_currentHealth);
-        
-
         if(_currentHealth <= 0)
         {
             Explosion();
@@ -40,15 +43,9 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void TakeDamage(int _damage)
-    {
-        _currentHealth -= _damage;
-    }
+    public void TakeDamage(int _damage){_currentHealth -= _damage;}
 
-    public void AddHealth(int _heal)
-    {
-        _currentHealth += _heal;
-    }
+    public void AddHealth(int _heal){_currentHealth += _heal;}
 
     public void ActivateDeath()
     {
@@ -65,6 +62,7 @@ public class Health : MonoBehaviour
             _originalObject.SetActive(false);
             foreach (GameObject _piece in _destructParts)
             {
+                _piece.SetActive(true);
                 Rigidbody _rb = _piece.GetComponent<Rigidbody>();
                 if(_rb != null) _rb.AddExplosionForce(Random.Range(_minExploForce, _maxExploForce), _originalObject.transform.position, _exploForceRadius);
             }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using UnityEngine.Rendering.HighDefinition;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -55,6 +56,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject _GPdecal;
     [SerializeField] Transform _GPFP;
     [SerializeField] Material _GPCrackMat;
+    [SerializeField] DecalProjector _fadeDecal; 
+    [SerializeField] GameObject _vfxCollide;
+    bool _resetFade;
+    int _fadeID;
+    float crackTime;
+
     bool _readyToAttack;
     bool _opisiteAttackAnim;
     bool _readyToGP;
@@ -111,6 +118,7 @@ public class PlayerMovement : MonoBehaviour
         _veloHash = Animator.StringToHash("velocity");
         _readyToLand = false;
         _state = _States.idle;
+        _fadeID = Shader.PropertyToID("_speed");
     }
     void Update()
     {
@@ -130,15 +138,20 @@ public class PlayerMovement : MonoBehaviour
                 {
                     _anim.SetFloat("landSpeedMultiply", .5f);
                     _gpHitBox.SetActive(true);
-
-                    RaycastHit shithit;
-                    if (Physics.Raycast(_GPFP.position, transform.TransformDirection(Vector3.down), out shithit, 1f))
+                    _GPCrackMat.SetFloat("_speed", crackTime);
+                    RaycastHit _rayHit;
+                    if (Physics.Raycast(_GPFP.position, transform.TransformDirection(Vector3.down), out _rayHit, 1f))
                     {
-                        GameObject _decalPrefab = Instantiate(_GPdecal, shithit.point, _GPFP.rotation);
-                        Destroy(_decalPrefab, 3);
+                        _resetFade = false;
+                        GameObject _decalPrefab = Instantiate(_GPdecal, _rayHit.point, _GPFP.rotation);
+                        GameObject _vfxPrefb = Instantiate(_vfxCollide, _rayHit.point, this.transform.rotation);
+                        _fadeDecal = _decalPrefab.GetComponent<DecalProjector>();
+                        Invoke("ResetFade", 3);
+                        Destroy(_decalPrefab, 6);
+                        Destroy(_vfxPrefb, 2);
                     }
                 }
-                else _anim.SetFloat("landSpeedMultiply", 1f);
+                else _anim.SetFloat("speed", 1f);
                 _state = _States.land;
                 _anim.SetInteger("state", 3);
                 _anim.SetBool("gpToLand" ,true);
@@ -272,11 +285,20 @@ public class PlayerMovement : MonoBehaviour
             _readyToJump = _canDash = true;
         }
         if(Input.GetMouseButtonUp(0)) StopLaser();
+        if(_fadeDecal != null)
+        {
+            float _fadeDecalFactor =  _fadeDecal.fadeFactor;
+            if(_resetFade) _fadeDecalFactor -= Time.deltaTime * 0.05f;
+            else _fadeDecalFactor += Time.deltaTime;
+            if(_fadeDecalFactor >= 0.036f) _fadeDecalFactor = 0.036f;
+            if(_fadeDecalFactor == 0) _GPCrackMat.SetFloat("_speed", _GPCrackMat.GetFloat(_fadeID) - Time.deltaTime);
+            else _GPCrackMat.SetFloat("_speed", _GPCrackMat.GetFloat(_fadeID) + Time.deltaTime * 2);
+            Debug.Log(_fadeDecalFactor);
+            _fadeDecal.fadeFactor = _fadeDecalFactor;
+        }
     }
-
     void RefreshMoves(){_canAttack = _canGP = _canJump = _canLaser =  _canMove = true;}
-
-
+    void ResetFade(){_resetFade = true;}
     // || PLAYER CORE MOVEMENT ||
     void Movement()
     {
@@ -401,14 +423,18 @@ public class PlayerMovement : MonoBehaviour
         _canMove = _canAttack =  false;
         _rb.AddForce(-transform.up * _GPForce, ForceMode.Impulse);
         _readyToLand = _isGP =true;
-        // Project
     }
-    void ResetGroundPound() { _readyToGP = true;}
+    void ResetGroundPound() 
+    { 
+        _readyToGP = true;
+    }
     void SwitchCam(bool _switch)
     {
         if(_switch) _camControl._isLaserMode = true;
         else _camControl._isLaserMode = false;
     }
+
+
     // || LASER ||
     void Laser()
     {

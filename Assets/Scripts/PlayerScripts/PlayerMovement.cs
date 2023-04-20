@@ -78,6 +78,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Camera _laserCamera;
     [SerializeField] GameObject[] _laserEyes;
     [SerializeField] float rayLength;
+    [SerializeField] private ValueSlider _energyBar;
+    [SerializeField] int _startingEnergy;
+    [SerializeField] int _currentEnergy;
     bool _activeLaser;
     bool _readyToLaser;
 
@@ -119,11 +122,14 @@ public class PlayerMovement : MonoBehaviour
         _readyToLand = false;
         _state = _States.idle;
         _fadeID = Shader.PropertyToID("_speed");
+        if(_energyBar != null)_energyBar.SetMaxValue(_startingEnergy);
+        _currentEnergy = _startingEnergy;
     }
     void Update()
     {
         //raycast generated for ground check, spawned from the players height down. 
         _grounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f+ 0.3f, _whatIsGround);
+        if(_energyBar!= null) _energyBar.SetValue(_currentEnergy);
         SpeedControl();
         Inputs();
         ProcessAnims();
@@ -180,6 +186,13 @@ public class PlayerMovement : MonoBehaviour
                 _dashRefreshTimer = _baseDashTime;
             }
         }
+
+        if(_currentEnergy <= 0) 
+        {
+            _canLaser = false;
+            StopLaser();
+        }
+        else _canLaser = true;
     }
     //Processes movment faster than update
     void FixedUpdate(){if(_canMove)Movement();} 
@@ -266,8 +279,8 @@ public class PlayerMovement : MonoBehaviour
             //activaes laser bool making so other anims cant override it
             _activeLaser = true;
         }
-        if(_camControl._isLaserMode == false) _activeLaser = false;
 
+        if(_camControl._isLaserMode == false) _activeLaser = false;
         //Camera control change - Mouse button 1 (right click) changes which camera mode the player is on, each varible resets depending on what input has been pressed down or up
         if(Input.GetMouseButtonDown(1))
         {
@@ -285,6 +298,8 @@ public class PlayerMovement : MonoBehaviour
             _readyToJump = _canDash = true;
         }
         if(Input.GetMouseButtonUp(0)) StopLaser();
+
+
         if(_fadeDecal != null)
         {
             float _fadeDecalFactor =  _fadeDecal.fadeFactor;
@@ -438,6 +453,7 @@ public class PlayerMovement : MonoBehaviour
     // || LASER ||
     void Laser()
     {
+        _currentEnergy -= 1;
         _readyToJump = false;
         _line.SetPosition(0, _firePoint.transform.position);
         RaycastHit _laser;

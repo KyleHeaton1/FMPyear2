@@ -5,15 +5,17 @@ using Discord;
 
 public class DiscordController : MonoBehaviour
 {
-    public long applicationID;
+    public long applicationID = 1098657012050575370;
     [Space]
-    public string details = "Playing the greatest game ever made";
+    public string details = "john";
     [Space]
     public string largeImage = "game_logo";
-    public string largeText = "Life Of Bean";
+    public string largeText = "Frogzilla";
 
     private static bool instanceExists = false;
     public Discord.Discord discord;
+
+    private long time;
 
     void Awake() 
     {
@@ -33,6 +35,7 @@ public class DiscordController : MonoBehaviour
     {
         // Log in with the Application ID
         discord = new Discord.Discord(applicationID, (System.UInt64)Discord.CreateFlags.NoRequireDiscord);
+        time = System.DateTimeOffset.Now.ToUnixTimeMilliseconds();
         UpdateStatus();
     }
 
@@ -68,7 +71,12 @@ public class DiscordController : MonoBehaviour
                     LargeImage = largeImage,
                     LargeText = largeText
                 },
+                Timestamps =
+                {
+                    Start = time
+                }
             };
+            
 
             activityManager.UpdateActivity(activity, (res) =>
             {

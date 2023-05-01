@@ -1,42 +1,9 @@
 fileFormatVersion: 2
-guid: 9fe291fdeddb35f4e80a5cf25b3811f4
+guid: b9fa8930a634d714d80013eaee49c226
 ModelImporter:
   serializedVersion: 22103
-  internalIDToNameTable:
-  - first:
-      74: -6641773963478698868
-    second: BigBlade|Cube.003Action
-  - first:
-      74: -2488547701298651438
-    second: BigBlade|Cube.003Action.001
-  - first:
-      74: 6468390545408657757
-    second: BigBlade|Cube.004Action
-  - first:
-      74: -617214361991796193
-    second: SmallBlade|Cube.003Action
-  - first:
-      74: -7552783566818630561
-    second: SmallBlade|Cube.003Action.001
-  - first:
-      74: 2903718139908086655
-    second: SmallBlade|Cube.004Action
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Mat
-    second: {fileID: 2100000, guid: 5f3e3aa26c005b64ca3f5efba8a0002c, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Wheel
-    second: {fileID: 2100000, guid: 15839d7be4d916b43af1ad36f92313c1, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: window
-    second: {fileID: 2100000, guid: bc7881a5a30a8ba4a984b9c141323876, type: 2}
+  internalIDToNameTable: []
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

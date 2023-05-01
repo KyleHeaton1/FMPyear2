@@ -402,7 +402,6 @@ public class PlayerMovement : MonoBehaviour
     // || ATTACKING ||
     void Attack()
     {
-        _attackHitBox.SetActive(true);
         if(_opisiteAttackAnim)
         {
             if(_grounded) 

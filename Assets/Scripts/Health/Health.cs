@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     [SerializeField] private float _deathDelay;
     [SerializeField] private bool _autoDeleteOnDeath;
     [HideInInspector] public bool _dead = false;
+    [HideInInspector] public bool _heathZero = false;
     [Space(10)]
 
     [SerializeField] private bool _destructible;
@@ -38,6 +39,7 @@ public class Health : MonoBehaviour
         if(_healthBar != null) _healthBar.SetValue(_currentHealth);
         if(_currentHealth <= 0)
         {
+            _heathZero = true;
             Explosion();
             Invoke("ActivateDeath", _deathDelay);
         }

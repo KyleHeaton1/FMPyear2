@@ -9,7 +9,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float _timeBetweenShots;
     [SerializeField] private int _range;
     float _baseTime;
-    void Start(){_baseTime = _timeBetweenShots;}
+    void Start(){_baseTime = _timeBetweenShots; _target = GameObject.Find("Orientation");}
     void Update()
     {
         Vector3 _thisPos = this.transform.position;

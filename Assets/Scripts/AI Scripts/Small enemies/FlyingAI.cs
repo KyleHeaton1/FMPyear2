@@ -6,6 +6,8 @@ public class FlyingAI : MonoBehaviour
 {
     [Header("Target Options")]
 	[SerializeField] private Transform _target;
+    [SerializeField] private Health _enemyHealth;
+    GameObject _playerObj;
 
     [Header("AI Movement Settings")]
 	[SerializeField] private float _targetVelocity;
@@ -23,14 +25,18 @@ public class FlyingAI : MonoBehaviour
  
     public void Start()
     {
-        _initialDistanceToTarget = (_target.position - transform.position).magnitude;
         _targetVelocity = 0;
+        _playerObj = GameObject.Find("Orientation");
+        _target = _playerObj.transform;
     }
  
-
+    void FixedUpdate(){if(_enemyHealth._heathZero == true)Destroy(this);}
     void Update()
     {
+
+
         //have a delay in rotation based on the target speed
+        _initialDistanceToTarget = (_target.position - transform.position).magnitude;
 		Quaternion rotTarget = Quaternion.LookRotation(_target.transform.position - this.transform.position);
         this.transform.rotation = Quaternion.RotateTowards(this.transform.rotation, rotTarget, _rotationSpeed * Time.deltaTime);
 

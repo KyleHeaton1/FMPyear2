@@ -243,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("DashReplen", _dashCooldown);
         }
-        if(Input.GetMouseButtonDown(0) && _readyToAttack && _camControl._isLaserMode == false && _canAttack)
+        if(Input.GetMouseButton(0) && _readyToAttack && _camControl._isLaserMode == false && _canAttack)
         {
             //makes it so we cant attack again
             _readyToAttack = false;

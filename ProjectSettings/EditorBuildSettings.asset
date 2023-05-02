@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/PlayerMovement/PlayerMovementTest.unity
+    guid: 275335523c0a96d4e9f64adea5f3ec8d
+  - enabled: 1
     path: Assets/HDRP Settings/OutdoorsScene.unity
     guid: 8124e5870f4fd4c779e7a5f994e84ad1
   m_configObjects: {}

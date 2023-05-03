@@ -470,7 +470,7 @@ public class PlayerMovement : MonoBehaviour
         else 
         {
             _line.SetPosition(1, _rayOrigin + (_laserCamera.transform.forward * rayLength));
-           _laserVFXObj.transform.LookAt(_rayOrigin + (_laserCamera.transform.forward * rayLength));
+            _laserVFXObj.transform.LookAt(_rayOrigin + (_laserCamera.transform.forward * rayLength));
         }
         Debug.DrawRay(_firePoint.transform.position, _laserCamera.transform.forward, Color.green);
         _line.enabled = true;

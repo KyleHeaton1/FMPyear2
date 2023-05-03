@@ -39,6 +39,7 @@ public class CrawlerAgent : Agent
     [Header("Target To Walk Towards")]
     //Target prefab to use in Dynamic envs
     public Transform m_Target; //Target the agent will walk towards during training.
+    public GameObject _theTarget;
 
     [Header("Obstacles")]
     public GameObject[] _buildings;
@@ -75,6 +76,8 @@ public class CrawlerAgent : Agent
 
     public override void Initialize()
     {
+        m_Target = GameObject.Find("TargetForSpider").transform;
+        //m_Target = transform.Find("Orientation");
         m_OrientationCube = GetComponentInChildren<OrientationCubeController>();
         m_DirectionIndicator = GetComponentInChildren<DirectionIndicator>();
         m_JdController = GetComponent<JointDriveController>();

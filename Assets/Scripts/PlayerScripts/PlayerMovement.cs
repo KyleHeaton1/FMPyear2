@@ -141,27 +141,39 @@ public class PlayerMovement : MonoBehaviour
             if(_readyToLand)
             {
                 if(_isGP)
-                {
-                    _anim.SetFloat("landSpeedMultiply", .5f);
+                {   
+                    //Actives the hitbox and the animation for the ground pound
                     _gpHitBox.SetActive(true);
+                    _anim.SetFloat("landSpeedMultiply", .5f);
+
+                    //Changes the speed of the crack time
                     _GPCrackMat.SetFloat("_speed", crackTime);
+
+                    //Checks if groundpound hits the floor
                     RaycastHit _rayHit;
                     if (Physics.Raycast(_GPFP.position, transform.TransformDirection(Vector3.down), out _rayHit, 1f))
                     {
                         _resetFade = false;
+
+                        //Spawns the decal and visual effects for the groundpound
                         GameObject _decalPrefab = Instantiate(_GPdecal, _rayHit.point, _GPFP.rotation);
                         GameObject _vfxPrefb = Instantiate(_vfxCollide, _rayHit.point, this.transform.rotation);
                         _fadeDecal = _decalPrefab.GetComponent<DecalProjector>();
+
+                        //Clears up the decals and visual effects
                         Invoke("ResetFade", 3);
                         Destroy(_decalPrefab, 6);
                         Destroy(_vfxPrefb, 2);
                     }
                 }
                 else _anim.SetFloat("speed", 1f);
+
                 _state = _States.land;
                 _anim.SetInteger("state", 3);
                 _anim.SetBool("gpToLand" ,true);
                 _readyToLand =  _isGP = false;
+
+                //Starts the refresh moves function
                 RefreshMoves();
             }
             _canGP = false;
@@ -243,7 +255,7 @@ public class PlayerMovement : MonoBehaviour
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("DashReplen", _dashCooldown);
         }
-        if(Input.GetMouseButton(0) && _readyToAttack && _camControl._isLaserMode == false && _canAttack)
+        if(Input.GetButton("Fire1") && _readyToAttack && _camControl._isLaserMode == false && _canAttack)
         {
             //makes it so we cant attack again
             _readyToAttack = false;
@@ -268,7 +280,7 @@ public class PlayerMovement : MonoBehaviour
             Invoke("ResetGroundPound", _GPCooldown);
             
         }
-        if(Input.GetMouseButton(0) && _readyToLaser && _camControl._isLaserMode && _canLaser)
+        if(Input.GetButton("Fire1") && _readyToLaser && _camControl._isLaserMode && _canLaser)
         {
             //changes the speed of the player while in laser mode (cam zoom mode)
             _moveSpeed = _laserMoveSpeed;
@@ -282,14 +294,14 @@ public class PlayerMovement : MonoBehaviour
 
         if(_camControl._isLaserMode == false) _activeLaser = false;
         //Camera control change - Mouse button 1 (right click) changes which camera mode the player is on, each varible resets depending on what input has been pressed down or up
-        if(Input.GetMouseButtonDown(1))
+        if(Input.GetButtonDown("Fire2"))
         {
             SwitchCam(true);
             _laserUI.SetActive(true);
             _moveSpeed = _laserMoveSpeed;
             _readyToJump = _canDash = false;
         }
-        if(Input.GetMouseButtonUp(1))
+        if(Input.GetButtonUp("Fire2"))
         {
             SwitchCam(false);
             _laserUI.SetActive(false);
@@ -297,7 +309,7 @@ public class PlayerMovement : MonoBehaviour
             StopLaser();
             _readyToJump = _canDash = true;
         }
-        if(Input.GetMouseButtonUp(0)) StopLaser();
+        if(Input.GetButtonUp("Fire1")) StopLaser();
 
 
         if(_fadeDecal != null)

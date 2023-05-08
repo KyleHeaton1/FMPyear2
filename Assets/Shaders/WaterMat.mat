@@ -24,7 +24,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: WaterMat
-  m_Shader: {fileID: -6465566751694194690, guid: 70074f91c967a0f42aa941b369e2907e,
+  m_Shader: {fileID: -6465566751694194690, guid: 1a2d909ebb8dafd44b82314eb2542932,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -67,6 +67,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AddPrecomputedVelocity: 0
+    - _Alpha: 0.41
     - _AlphaCutoffEnable: 0
     - _AlphaDstBlend: 10
     - _AlphaSrcBlend: 1
@@ -87,6 +88,8 @@ Material:
     - _EnableFogOnTransparent: 0
     - _Float: 2.31
     - _Float_1: 0.77
+    - _Lod: 6.93
+    - _Normal_Strength: 0.59
     - _OpaqueCullMode: 2
     - _RayTracing: 0
     - _ReceivesSSR: 1
@@ -94,6 +97,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
+    - _Smoothness: 2.91
     - _Speed: 0.75
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -116,6 +120,7 @@ Material:
     - _TransparentWritingMotionVec: 1
     - _TransparentZWrite: 0
     - _UseShadowThreshold: 0
+    - _WaterLerp: 0.422
     - _ZTestDepthEqualForOpaque: 4
     - _ZTestGBuffer: 4
     - _ZTestTransparent: 4
@@ -125,8 +130,10 @@ Material:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Speed: {r: 0, g: 0, b: 0, a: 0}
-    - _UV1: {r: 2, g: 2, b: 0.1, a: 2.6}
+    - _UV1: {r: 23, g: 23, b: 0.1, a: 2.6}
+    - _UV2: {r: 2, g: 2, b: 0.1, a: 0}
     - _WaterSpeed: {r: 0.2, g: 1, b: 0, a: 0}
+    - _WaterSpeed2: {r: 0.2, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &792683153259374551
 MonoBehaviour:

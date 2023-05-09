@@ -5,6 +5,7 @@ using UnityEngine;
 public class DamageBox : MonoBehaviour
 {   
     [SerializeField] private bool _isGPDamage;
+    [SerializeField] GameObject _attackRubble;
     int _damageBoxDamage;
     [SerializeField] private PlayerMovement _pm;
     void Start(){if(!_isGPDamage)_damageBoxDamage = _pm._damage; else _damageBoxDamage = _pm._GPdamage;}
@@ -12,5 +13,10 @@ public class DamageBox : MonoBehaviour
     {
         Health _destructHealth = other.gameObject.GetComponent<Health>();
         if(_destructHealth != null) _destructHealth.TakeDamage(_damageBoxDamage);
+        if(other.gameObject.tag == "Buildings")
+        {
+            GameObject _vfx = Instantiate(_attackRubble, this.transform.position, this.transform.rotation);
+        }
+
     }
 }

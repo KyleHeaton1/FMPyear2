@@ -111,28 +111,44 @@ public class PlayerMovement : MonoBehaviour
         damage,
         runnning  
     }
+
     void Start()
     {
+        //get components 
         _rb = GetComponent<Rigidbody>();
         _line = GetComponent<LineRenderer>();
+        
+        //set ALL bools to true
         _readyToJump = _readyToDash = _canDash = _rb.freezeRotation = _readyToAttack = _readyToGP = _readyToLaser = _canJump = _canAttack = _canLaser = _canMove = true;
+        _readyToLand = false;
+
+        //assign floats/ints to base values
         _baseSpeed = _moveSpeed;
         _baseDashTime = _dashRefreshTimer;
+
+        //set animations for blend tree and animator
         _veloHash = Animator.StringToHash("velocity");
-        _readyToLand = false;
         _state = _States.idle;
+
+        //reset crack shader speed
         _fadeID = Shader.PropertyToID("_speed");
+
+        //set energy value to slider
         if(_energyBar != null)_energyBar.SetMaxValue(_startingEnergy);
         _currentEnergy = _startingEnergy;
     }
+
     void Update()
     {
         //raycast generated for ground check, spawned from the players height down. 
         _grounded = Physics.Raycast(transform.position, Vector3.down, _playerHeight * 0.5f+ 0.3f, _whatIsGround);
         if(_energyBar!= null) _energyBar.SetValue(_currentEnergy);
+
+        //process all functions
         SpeedControl();
         Inputs();
         ProcessAnims();
+
         //slows down object if grounded, if not then the lower the drag means the less it will get slowed down
         //ON GROUND
         if (_grounded)
@@ -171,10 +187,10 @@ public class PlayerMovement : MonoBehaviour
                 _state = _States.land;
                 _anim.SetInteger("state", 3);
                 _anim.SetBool("gpToLand" ,true);
-                _readyToLand =  _isGP = false;
 
                 //Starts the refresh moves function
                 RefreshMoves();
+                _readyToLand = _isGP = false;
             }
             _canGP = false;
         }
@@ -206,8 +222,10 @@ public class PlayerMovement : MonoBehaviour
         }
         else _canLaser = true;
     }
+
     //Processes movment faster than update
     void FixedUpdate(){if(_canMove)Movement();} 
+    
     void Inputs()
     {
         //gets horizontal and vertical input to a float
@@ -298,15 +316,17 @@ public class PlayerMovement : MonoBehaviour
         {
             SwitchCam(true);
             _laserUI.SetActive(true);
+
             _moveSpeed = _laserMoveSpeed;
             _readyToJump = _canDash = false;
         }
         if(Input.GetButtonUp("Fire2"))
         {
+            StopLaser();
             SwitchCam(false);
             _laserUI.SetActive(false);
+
             _moveSpeed = _baseSpeed;
-            StopLaser();
             _readyToJump = _canDash = true;
         }
         if(Input.GetButtonUp("Fire1")) StopLaser();
@@ -317,9 +337,12 @@ public class PlayerMovement : MonoBehaviour
             float _fadeDecalFactor =  _fadeDecal.fadeFactor;
             if(_resetFade) _fadeDecalFactor -= Time.deltaTime * 0.05f;
             else _fadeDecalFactor += Time.deltaTime;
+
             if(_fadeDecalFactor >= 0.036f) _fadeDecalFactor = 0.036f;
+
             if(_fadeDecalFactor == 0) _GPCrackMat.SetFloat("_speed", _GPCrackMat.GetFloat(_fadeID) - Time.deltaTime);
             else _GPCrackMat.SetFloat("_speed", _GPCrackMat.GetFloat(_fadeID) + Time.deltaTime * 2);
+
             Debug.Log(_fadeDecalFactor);
             _fadeDecal.fadeFactor = _fadeDecalFactor;
         }
@@ -442,6 +465,8 @@ public class PlayerMovement : MonoBehaviour
         if(_grounded)_readyToJump = true;
         _attackHitBox.SetActive(false);
     }
+
+
     // || GROUND POUND ||
     void GroundPound()
     {
@@ -493,6 +518,8 @@ public class PlayerMovement : MonoBehaviour
         _laserVFXObj.SetActive(false);
         foreach (GameObject _e in _laserEyes) _e.SetActive(false);
     }
+
+
     // || ANIMATIONS ||
     void ProcessAnims()
     {

@@ -1084,6 +1084,7 @@ GameObject:
   - component: {fileID: 9101807002601666595}
   - component: {fileID: 9101807002601666604}
   - component: {fileID: 9101807002601666605}
+  - component: {fileID: 8938948645920641444}
   m_Layer: 0
   m_Name: Flying AI With Gun final
   m_TagString: Untagged
@@ -1108,7 +1109,7 @@ Transform:
   - {fileID: 1593345758496208610}
   - {fileID: 5168796046480579600}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &9101807002601666606
 MeshFilter:
@@ -1262,3 +1263,16 @@ MonoBehaviour:
   _minExploForce: 3
   _maxExploForce: 5
   _exploForceRadius: 5
+--- !u!114 &8938948645920641444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101807002601666594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbdf005bff55b1146a13f62a5156e6f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scoreToAdd: 10

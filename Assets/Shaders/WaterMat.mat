@@ -89,7 +89,7 @@ Material:
     - _Float: 2.31
     - _Float_1: 0.77
     - _Lod: 6.93
-    - _Normal_Strength: 0.59
+    - _Normal_Strength: -0.82
     - _OpaqueCullMode: 2
     - _RayTracing: 0
     - _ReceivesSSR: 1
@@ -97,7 +97,7 @@ Material:
     - _RefractionModel: 0
     - _RenderQueueType: 4
     - _RequireSplitLighting: 0
-    - _Smoothness: 2.91
+    - _Smoothness: 1.59
     - _Speed: 0.75
     - _SrcBlend: 1
     - _StencilRef: 0
@@ -130,10 +130,10 @@ Material:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Speed: {r: 0, g: 0, b: 0, a: 0}
-    - _UV1: {r: 23, g: 23, b: 0.1, a: 2.6}
-    - _UV2: {r: 2, g: 2, b: 0.1, a: 0}
-    - _WaterSpeed: {r: 0.2, g: 1, b: 0, a: 0}
-    - _WaterSpeed2: {r: 0.2, g: 0, b: 0, a: 0}
+    - _UV1: {r: 120, g: 120, b: 0.1, a: 2.6}
+    - _UV2: {r: 120, g: 120, b: 0.1, a: 0}
+    - _WaterSpeed: {r: 0.01, g: 1, b: 0, a: 0}
+    - _WaterSpeed2: {r: 0.01, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &792683153259374551
 MonoBehaviour:

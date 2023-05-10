@@ -3,7 +3,12 @@ guid: 69bacb6e6193cc14a867eafa138a1dd2
 ModelImporter:
   serializedVersion: 22103
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: proxy_mat_yellow
+    second: {fileID: 2100000, guid: 343a8d8db40b58d4398ce3cf0c7f65ab, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

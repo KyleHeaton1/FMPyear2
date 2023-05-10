@@ -1,0 +1,148 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9034212817847101016
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9034212817847101021}
+  - component: {fileID: 9034212817847101018}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9034212817847101021
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9034212817847101016}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 279.2705, y: 299.79306, z: -136.72923}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9034212817847101018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9034212817847101016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06162390eef7ba742b7e3797ce526166, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: Click1
+    clip: {fileID: 8300000, guid: a6908273ae78e7445a63a2e4e90e10ca, type: 3}
+    volume: 0.12
+    pitch: 1
+    loop: 0
+    outputAudioMixerGroup: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: Click2
+    clip: {fileID: 8300000, guid: a6908273ae78e7445a63a2e4e90e10ca, type: 3}
+    volume: 0.12
+    pitch: 1
+    loop: 0
+    outputAudioMixerGroup: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: Click3
+    clip: {fileID: 8300000, guid: a8c63a60022875e4692b907e0d374869, type: 3}
+    volume: 0.12
+    pitch: 1
+    loop: 0
+    outputAudioMixerGroup: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: Click4
+    clip: {fileID: 8300000, guid: a8c63a60022875e4692b907e0d374869, type: 3}
+    volume: 0.12
+    pitch: 1
+    loop: 0
+    outputAudioMixerGroup: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: GrassFoot1
+    clip: {fileID: 8300000, guid: 9fba0919d1f89504285fd1b03ca8dc18, type: 3}
+    volume: 0.12
+    pitch: 1
+    loop: 0
+    outputAudioMixerGroup: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: GrassFoot2
+    clip: {fileID: 8300000, guid: 561fee0837bed68499d6544834a9eb7e, type: 3}
+    volume: 0.12
+    pitch: 1
+    loop: 0
+    outputAudioMixerGroup: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: Swing
+    clip: {fileID: 8300000, guid: b17861059a743644f807031edf78e7e1, type: 3}
+    volume: 0.12
+    pitch: 1
+    loop: 0
+    outputAudioMixerGroup: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: frog
+    clip: {fileID: 8300000, guid: 204edca80c84b8d4abb4e8e84509efdd, type: 3}
+    volume: 0.12
+    pitch: 1
+    loop: 0
+    outputAudioMixerGroup: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  music:
+  - name: Music1
+    clip: {fileID: 8300000, guid: 7940009fc6865c34a8b179a5942b0728, type: 3}
+    volume: 0.104
+    pitch: 1
+    loop: 1
+    outputAudioMixerGroup: {fileID: -1948825671018581578, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: Level1
+    clip: {fileID: 8300000, guid: cae0988addc828647a42b81ca0836a4c, type: 3}
+    volume: 0.104
+    pitch: 1
+    loop: 1
+    outputAudioMixerGroup: {fileID: -1948825671018581578, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: Level2
+    clip: {fileID: 8300000, guid: d9a9239adcd29fd488a7387b9bec2f16, type: 3}
+    volume: 0.104
+    pitch: 1
+    loop: 1
+    outputAudioMixerGroup: {fileID: -1948825671018581578, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: Level3
+    clip: {fileID: 8300000, guid: 6a69244a76ebb6849950e88bd20deb77, type: 3}
+    volume: 0.104
+    pitch: 1
+    loop: 1
+    outputAudioMixerGroup: {fileID: -1948825671018581578, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: FinalBoss
+    clip: {fileID: 8300000, guid: f94385a0124a45c4a9c19cea7257373b, type: 3}
+    volume: 0.104
+    pitch: 1
+    loop: 1
+    outputAudioMixerGroup: {fileID: -1948825671018581578, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  - name: Credits
+    clip: {fileID: 8300000, guid: 247c4a5320055aa4196a5960c2d50c1b, type: 3}
+    volume: 0.104
+    pitch: 1
+    loop: 1
+    outputAudioMixerGroup: {fileID: -1948825671018581578, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+    source: {fileID: 0}
+  musicMixer: {fileID: -1948825671018581578, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}
+  soundMixer: {fileID: 4806786747355179395, guid: 5c88300041eeabf469602ed18d73fbad, type: 2}

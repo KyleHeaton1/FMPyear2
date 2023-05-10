@@ -44,6 +44,8 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+            s.source.spatialBlend = s.spatialBlend;
+            s.source.dopplerLevel = s.dopplerLevel;
             s.source.outputAudioMixerGroup = soundMixer;
         }
 
@@ -55,20 +57,25 @@ public class AudioManager : MonoBehaviour
             m.source.volume = m.volume;
             m.source.pitch = m.pitch;
             m.source.loop = m.loop;
-            m.source.outputAudioMixerGroup = musicMixer;
+            m.source.spatialBlend = m.spatialBlend;
+            m.source.dopplerLevel = m.dopplerLevel;
+            m.source.outputAudioMixerGroup = soundMixer;
         }
         //this could be used to play music when a scene loads
-        PlayMusic("BGM"); //this will play the music sound with the name BGM
-        SceneMusic(); //alter this function to play different background music depending on scene
+        PlayOneShotSound("BGM"); 
+        PlayOneShotSound("Fire");//this will play the music sound with the name BGM
+        //SceneMusic(); alter this function to play different background music depending on scene
     }
 
 
     void Update()
     {
+        /*
         if(SceneManager.GetActiveScene() != currentScene)
         {
             SceneMusic();
         }
+        */
     }
 
     public void SceneMusic()
@@ -100,16 +107,8 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("Sound: " + name + " not found!");
             return;
         }
+        Debug.Log("Playing sound");
         s.source.Play();
-    }
-
-    public void StopAll()
-    {
-        Component[] sources;
-        sources = GetComponentsInChildren<AudioSource>();
-        foreach(AudioSource tSource in sources){
-            tSource.Stop();
-        }
     }
 
     public void PlayMusic(string name)
@@ -121,12 +120,60 @@ public class AudioManager : MonoBehaviour
             Debug.LogWarning("Music: " + name + " not found!");
             return;
         }
-        Debug.Log("Playing shit");
+        Debug.Log("Playing music");
         m.source.Play();
     }
 
+    //plays oneshot sound. Use for overlapping audio such as gunshots
+    public void PlayOneShotSound(string name)
+    {
+        Sound s = Array.Find(sounds, sound => sound.name == name);
+        //custom error message when cant find clip name
+        if (s == null)
+        {
+            Debug.LogWarning("Sound: " + name + " not found!");
+            return;
+        }
+        s.source.PlayOneShot(s.clip, s.volume);
+    }
+
+    public void StopAll()
+    {
+        Component[] sources;
+        sources = GetComponentsInChildren<AudioSource>();
+        foreach(AudioSource tSource in sources){
+            tSource.Stop();
+        }
+    }
+
+    public void StopSpecific(string name)
+    {
+        Sound m = Array.Find(music, sound => sound.name == name);
+        //custom error message when cant find clip name
+        if (m == null)
+        {
+            Sound s = Array.Find(sounds, sound => sound.name == name);
+            //custom error message when cant find clip name
+            if (s == null)
+            {
+                Debug.LogWarning("Sound: " + name + " not found!");
+                return;
+            }
+            else
+            {
+                Debug.Log("Stopping sound");
+                s.source.Stop();
+            }
+        }
+        else
+        {
+            Debug.Log("Stopping music");
+            m.source.Stop();
+        }
+    }
+
     //to play from anywhere do
-    //FindObjectOfType<AudioManager>().PlaySound("SoundName")
+    //FindObjectOfType<AudioManager>().PlayOneShotSound("SoundName")
 
     //to edit volume from another script do
     //AudioManager manager = FindObjectOfType<AudioManager>();

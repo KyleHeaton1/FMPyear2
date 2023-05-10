@@ -40,8 +40,12 @@ public class AudioController : MonoBehaviour
             m.source.volume = m.volume;
             m.source.pitch = m.pitch;
             m.source.loop = m.loop;
+            m.source.spatialBlend = m.spatialBlend;
+            m.source.dopplerLevel = m.dopplerLevel;
             m.source.outputAudioMixerGroup = musicMixer;
         }
+
+        PlayMusic("fuck");
 
         //this could be used to play music when a scene loads
         //PlayMusic("BGM"); this will play the music sound with the name BGM
@@ -54,11 +58,15 @@ public class AudioController : MonoBehaviour
 
     void Update()
     {
+        /*
         if(SceneManager.GetActiveScene() != currentScene)
         {
             SceneMusic();
         }
+        */
     }
+
+
 
     public void SceneMusic()
     {

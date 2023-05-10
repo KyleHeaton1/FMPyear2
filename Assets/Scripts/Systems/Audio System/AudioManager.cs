@@ -62,8 +62,8 @@ public class AudioManager : MonoBehaviour
             m.source.outputAudioMixerGroup = soundMixer;
         }
         //this could be used to play music when a scene loads
-        PlayOneShotSound("BGM"); 
-        PlayOneShotSound("Fire");//this will play the music sound with the name BGM
+        PlaySound("BGM"); 
+        PlaySound("Fire");//this will play the music sound with the name BGM
         //SceneMusic(); alter this function to play different background music depending on scene
     }
 

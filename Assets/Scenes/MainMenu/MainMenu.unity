@@ -8689,7 +8689,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 5f76709f276772b419fde8dfee0cd47c, type: 3}
     outputAudioMixerGroup: {fileID: -3020269314422819713, guid: 20e3b4152ed5ec74a955bd5eab71c050,
       type: 2}
-    volume: 1
+    volume: 0
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 0
@@ -18116,17 +18116,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 890c1006a4d5c9945b006188ffbf0fa7, type: 3}
     outputAudioMixerGroup: {fileID: -3020269314422819713, guid: 20e3b4152ed5ec74a955bd5eab71c050,
       type: 2}
-    volume: 1
-    pitch: 1
-    spatialBlend: 0.5
-    dopplerLevel: 0
-    loop: 1
-    source: {fileID: 0}
-  - name: BGM
-    clip: {fileID: 8300000, guid: 99c0eb5e33ca7fa44bd2741ee6690cc2, type: 3}
-    outputAudioMixerGroup: {fileID: -3020269314422819713, guid: 20e3b4152ed5ec74a955bd5eab71c050,
-      type: 2}
-    volume: 1
+    volume: 0
     pitch: 1
     spatialBlend: 0.5
     dopplerLevel: 0

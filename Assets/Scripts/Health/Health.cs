@@ -13,6 +13,7 @@ public class Health : MonoBehaviour
 
     [Header ("Death Properties")]
     [SerializeField] private float _deathDelay;
+    [SerializeField] private GameObject _specficObjectToDestroy;
     [SerializeField] private bool _autoDeleteOnDeath;
     [HideInInspector] public bool _dead = false;
     [HideInInspector] public bool _heathZero = false;
@@ -52,6 +53,7 @@ public class Health : MonoBehaviour
     public void ActivateDeath()
     {
         _dead = true;
+        if(_specficObjectToDestroy != null) Destroy(_specficObjectToDestroy);
         if(!_autoDeleteOnDeath)return;
         else Destroy(gameObject);
     }

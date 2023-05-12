@@ -15,6 +15,7 @@ public class Health : MonoBehaviour
     [SerializeField] private float _deathDelay;
     [SerializeField] private GameObject _specficObjectToDestroy;
     [SerializeField] private bool _autoDeleteOnDeath;
+    [SerializeField] private bool _removeColliderOnDeath;
     [HideInInspector] public bool _dead = false;
     [HideInInspector] public bool _heathZero = false;
     [Space(10)]
@@ -43,6 +44,8 @@ public class Health : MonoBehaviour
             _heathZero = true;
             Explosion();
             Invoke("ActivateDeath", _deathDelay);
+            if(!_removeColliderOnDeath) return;
+            else gameObject.GetComponent<BoxCollider>().enabled = false;
         }
     }
 
@@ -56,6 +59,7 @@ public class Health : MonoBehaviour
         if(_specficObjectToDestroy != null) Destroy(_specficObjectToDestroy);
         if(!_autoDeleteOnDeath)return;
         else Destroy(gameObject);
+
     }
 
     public void Explosion()

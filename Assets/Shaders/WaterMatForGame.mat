@@ -130,8 +130,8 @@ Material:
     - _DoubleSidedConstants: {r: 1, g: 1, b: -1, a: 0}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
     - _Speed: {r: 0, g: 0, b: 0, a: 0}
-    - _UV1: {r: 20, g: 20, b: 0.1, a: 2.6}
-    - _UV2: {r: 20, g: 20, b: 0.1, a: 0}
+    - _UV1: {r: 30, g: 30, b: 0.1, a: 2.6}
+    - _UV2: {r: 30, g: 30, b: 0.1, a: 0}
     - _WaterSpeed: {r: 0.01, g: 1, b: 0, a: 0}
     - _WaterSpeed2: {r: 0.01, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []

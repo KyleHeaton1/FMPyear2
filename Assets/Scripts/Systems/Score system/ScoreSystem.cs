@@ -6,7 +6,7 @@ using TMPro;
 public class ScoreSystem : MonoBehaviour
 {
     [Header ("Score Properties")]
-    [SerializeField] private int _score = 0;
+    [SerializeField] public int _score = 0;
     [SerializeField] private int _scoreToReach;
     [SerializeField] private TMP_Text _scoreText;
 
@@ -23,10 +23,12 @@ public class ScoreSystem : MonoBehaviour
     float _currentTime;
     int _currentSeconds;
     int _currentMins;
+
+    [HideInInspector] public bool _failed;
     
     void Start()
     {
-        
+        if(!_addTime) _currentTime = _timeLimit;
     }
 
     public void AddScore(int _addedScore)
@@ -54,8 +56,8 @@ public class ScoreSystem : MonoBehaviour
 
     void Finished(bool _hasWon)
     {
-        if(!_hasWon){} // fail
-        else{} // win
+        if(!_hasWon) _failed = true; // fail
+        else _failed = true; // win
     }
 
     void TimeSytem()

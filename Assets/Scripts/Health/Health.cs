@@ -7,7 +7,7 @@ public class Health : MonoBehaviour
 {
     [Header ("Health Properties")]
     [SerializeField] private int _startingHealth;
-    [SerializeField] private int  _currentHealth;
+    [SerializeField] public int  _currentHealth;
     [SerializeField] private ValueSlider _healthBar;
     [Space(10)]
 

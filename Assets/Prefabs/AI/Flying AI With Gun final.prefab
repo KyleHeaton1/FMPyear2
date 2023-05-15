@@ -1085,6 +1085,7 @@ GameObject:
   - component: {fileID: 9101807002601666604}
   - component: {fileID: 9101807002601666605}
   - component: {fileID: 8938948645920641444}
+  - component: {fileID: -1802942750208047435}
   m_Layer: 0
   m_Name: Flying AI With Gun final
   m_TagString: Untagged
@@ -1251,7 +1252,9 @@ MonoBehaviour:
   _currentHealth: 0
   _healthBar: {fileID: 0}
   _deathDelay: 5
+  _specficObjectToDestroy: {fileID: 0}
   _autoDeleteOnDeath: 1
+  _removeColliderOnDeath: 0
   _dead: 0
   _heathZero: 0
   _destructible: 1
@@ -1276,3 +1279,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _scoreToAdd: 10
+--- !u!114 &-1802942750208047435
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101807002601666594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 759adffa7cdfe9b41adc57e2dc230612, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     bool _isMoving;
     float _baseSpeed;
     bool _readyToJump;
-    bool _canMove;
+    [HideInInspector] public bool _canMove;
 
     [Header("Dash Settings")]
     [SerializeField] private float _dashForce;
@@ -93,6 +93,11 @@ public class PlayerMovement : MonoBehaviour
     int _veloHash;
     bool _canJump, _canAttack, _canLaser;
 
+    [SerializeField] private Health _playerHealth;
+    [SerializeField] private Material _damageMat;
+
+    [HideInInspector] public bool _canInput = true;
+
     [SerializeField] private _States _state;
     public enum _States
     {
@@ -146,8 +151,11 @@ public class PlayerMovement : MonoBehaviour
 
         //process all functions
         SpeedControl();
-        Inputs();
+        if(_canInput)Inputs();
         ProcessAnims();
+
+        if(_playerHealth._currentHealth <= 50) _damageMat.SetFloat("_CutDamage",  99);
+        else _damageMat.SetFloat("_CutDamage",  0);
 
         //slows down object if grounded, if not then the lower the drag means the less it will get slowed down
         //ON GROUND

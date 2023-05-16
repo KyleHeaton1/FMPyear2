@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _playerHeight;
     [SerializeField] private LayerMask _whatIsGround;
     
-    bool _grounded;
+    [HideInInspector] public bool _grounded;
     bool _readyToLand;
 
     Rigidbody _rb;
@@ -82,7 +82,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] int _startingEnergy;
     [SerializeField] int _currentEnergy;
     bool _activeLaser;
-    bool _readyToLaser;
+    [HideInInspector] public bool _readyToLaser;
 
     [Header("Other Settings")]
     [SerializeField] private ThirdPersonCameraControl _camControl;
@@ -97,8 +97,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Material _damageMat;
 
     [HideInInspector] public bool _canInput = true;
+    [HideInInspector] public bool _camReady = true;
 
     [SerializeField] private _States _state;
+
+
     public enum _States
     {
         idle, 
@@ -172,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
 
                     //Changes the speed of the crack time
                     _GPCrackMat.SetFloat("_speed", crackTime);
-
+                    FindObjectOfType<AudioManager>().PlayOneShotSound("gp");
                     //Checks if groundpound hits the floor
                     RaycastHit _rayHit;
                     if (Physics.Raycast(_GPFP.position, transform.TransformDirection(Vector3.down), out _rayHit, 1f))
@@ -314,6 +317,8 @@ public class PlayerMovement : MonoBehaviour
             //activates laser
             Laser();
 
+            FindObjectOfType<AudioManager>().PlayOneShotSound("laser");
+
             //activaes laser bool making so other anims cant override it
             _activeLaser = true;
         }
@@ -351,7 +356,6 @@ public class PlayerMovement : MonoBehaviour
             if(_fadeDecalFactor == 0) _GPCrackMat.SetFloat("_speed", _GPCrackMat.GetFloat(_fadeID) - Time.deltaTime);
             else _GPCrackMat.SetFloat("_speed", _GPCrackMat.GetFloat(_fadeID) + Time.deltaTime * 2);
 
-            Debug.Log(_fadeDecalFactor);
             _fadeDecal.fadeFactor = _fadeDecalFactor;
         }
     }
@@ -445,6 +449,8 @@ public class PlayerMovement : MonoBehaviour
     // || ATTACKING ||
     void Attack()
     {
+
+        FindObjectOfType<AudioManager>().PlayOneShotSound("attack");
         if(_opisiteAttackAnim)
         {
             if(_grounded) 
@@ -489,6 +495,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void SwitchCam(bool _switch)
     {
+        if(!_camReady) return;
         if(_switch) _camControl._isLaserMode = true;
         else _camControl._isLaserMode = false;
     }
@@ -525,6 +532,7 @@ public class PlayerMovement : MonoBehaviour
         _activeLaser = _line.enabled =false;
         _laserVFXObj.SetActive(false);
         foreach (GameObject _e in _laserEyes) _e.SetActive(false);
+        FindObjectOfType<AudioManager>().StopSpecific("laser");
     }
 
 

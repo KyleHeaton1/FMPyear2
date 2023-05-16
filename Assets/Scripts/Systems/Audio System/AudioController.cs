@@ -40,17 +40,17 @@ public class AudioController : MonoBehaviour
             m.source.volume = m.volume;
             m.source.pitch = m.pitch;
             m.source.loop = m.loop;
-            m.source.spatialBlend = m.spatialBlend;
             m.source.dopplerLevel = m.dopplerLevel;
+            m.source.spatialBlend = m.spatialBlend;
             m.source.outputAudioMixerGroup = musicMixer;
         }
 
-        PlayMusic("fuck");
-
         //this could be used to play music when a scene loads
-        //PlayMusic("BGM"); this will play the music sound with the name BGM
+        //PlayMusic("BGM"); //this will play the music sound with the name BGM
         //SceneMusic(); alter this function to play different background music depending on scene
         
+        PlaySound("heli");
+
         //use these for individual sounds
         //PlayOneShotSound("smg"); Plays oneshot sound. Use for overlapping audio such as gunshots
         //PlaySound("reload");  plays sound use for non overlapping audio like grenades, footsteps or reloads
@@ -58,16 +58,13 @@ public class AudioController : MonoBehaviour
 
     void Update()
     {
-        /*
-        if(SceneManager.GetActiveScene() != currentScene)
-        {
-            SceneMusic();
-        }
-        */
+        // if(SceneManager.GetActiveScene() != currentScene)
+        // {
+        //     SceneMusic();
+        // }
     }
 
-
-
+    //DANGER THIS WILL STOP ALL BUT ONESHOT SOUNDS
     public void SceneMusic()
     {
         StopAll();

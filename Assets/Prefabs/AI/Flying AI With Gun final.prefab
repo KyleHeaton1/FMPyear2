@@ -1086,6 +1086,7 @@ GameObject:
   - component: {fileID: 9101807002601666605}
   - component: {fileID: 8938948645920641444}
   - component: {fileID: -1802942750208047435}
+  - component: {fileID: 7359597778079608984}
   m_Layer: 0
   m_Name: Flying AI With Gun final
   m_TagString: Untagged
@@ -1291,3 +1292,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 759adffa7cdfe9b41adc57e2dc230612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7359597778079608984
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9101807002601666594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02167ff844474d341aaede08b6d47825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: heli
+    clip: {fileID: 8300000, guid: 16953fbf6ea3a7a4eb98beddb0c2c5e2, type: 3}
+    outputAudioMixerGroup: {fileID: 0}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    dopplerLevel: 1
+    loop: 1
+    source: {fileID: 0}
+  music:
+  - name: fuck
+    clip: {fileID: 8300000, guid: 16953fbf6ea3a7a4eb98beddb0c2c5e2, type: 3}
+    outputAudioMixerGroup: {fileID: 0}
+    volume: 0.513
+    pitch: 1
+    spatialBlend: 1
+    dopplerLevel: 0.478
+    loop: 1
+    source: {fileID: 0}
+  musicMixer: {fileID: -3020269314422819713, guid: 20e3b4152ed5ec74a955bd5eab71c050,
+    type: 2}
+  soundMixer: {fileID: -4387434332411123013, guid: 20e3b4152ed5ec74a955bd5eab71c050,
+    type: 2}

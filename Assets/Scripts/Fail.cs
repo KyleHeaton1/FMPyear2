@@ -7,40 +7,65 @@ public class Fail : MonoBehaviour
 {
     [SerializeField] private Health _playerHealth;
     [SerializeField] private GameObject _playerMesh;
-    [SerializeField] private GameObject _failUI;
-    [SerializeField] private GameObject _playerRagdoll;
-    [SerializeField] private GameObject _deathCam;
+    [SerializeField] private GameObject _failUI, _winUI;
+    [SerializeField] private GameObject _playerRagdoll, _playerWinObj;
+    [SerializeField] private GameObject _deathCam, _winCam;
     [SerializeField] private GameObject _laserCam, _tpCam;
     [SerializeField] private ScoreSystem _scoreSystem;
     [SerializeField] private PlayerMovement _pm;
     [SerializeField] private float _delay;
     [SerializeField] private Rigidbody _rb;
     bool _processScreen = true;
+    bool _hasWonGame = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        if(_playerHealth._heathZero|| _scoreSystem._failed) EndGame();
+        if(_hasWonGame == false)
+        {
+            if(_playerHealth._heathZero || _scoreSystem._failed) 
+            {
+                EndGame();
+                 Failed();
+            }
+        }
+
+        if(_scoreSystem._failed == false && _scoreSystem._won == true)
+        {
+            EndGame();
+            Won();
+        }
     }
 
     void EndGame()
     {
-        _pm._canInput = false;
-        _pm._canMove = false;
-        _pm.enabled = false;
+        _pm._canInput = _pm._canMove = _pm.enabled = _pm._readyToLaser = _pm._camReady = false;
         _playerMesh.SetActive(false);
-        _playerRagdoll.SetActive(true);
         _deathCam.SetActive(true);
         _tpCam.SetActive(false);
         _laserCam.SetActive(false); 
         _rb.mass = 10;
+    }
+
+    void Failed()
+    {
+        _playerRagdoll.SetActive(true);
+        _deathCam.SetActive(true);
         if(_processScreen) Invoke("FailScreen", _delay);
+    }
+
+    void Won()
+    {
+        _hasWonGame = true;
+        _winCam.SetActive(true);
+        _playerWinObj.SetActive(true);
+        if(_processScreen) Invoke("WinScreen", _delay);
+    }
+
+    void WinScreen()
+    {
+        _processScreen = false;
+        Cursor.lockState = CursorLockMode.None;
+        _winUI.SetActive(true);
     }
 
     void FailScreen()

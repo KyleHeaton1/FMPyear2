@@ -24,7 +24,8 @@ public class ScoreSystem : MonoBehaviour
     int _currentSeconds;
     int _currentMins;
 
-    [HideInInspector] public bool _failed;
+    [HideInInspector] public bool _failed = false;
+    [HideInInspector] public bool _won = false;
     
     void Start()
     {
@@ -56,8 +57,16 @@ public class ScoreSystem : MonoBehaviour
 
     void Finished(bool _hasWon)
     {
-        if(!_hasWon) _failed = true; // fail
-        else _failed = true; // win
+        if(!_hasWon)
+        {
+            _failed = true; 
+            _won = false;
+        } // fail
+        else
+        {
+            _failed = false;
+            _won = true;
+        } // win
     }
 
     void TimeSytem()

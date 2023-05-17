@@ -46,7 +46,7 @@ public class AudioManager : MonoBehaviour
             s.source.loop = s.loop;
             s.source.spatialBlend = s.spatialBlend;
             s.source.dopplerLevel = s.dopplerLevel;
-            s.source.outputAudioMixerGroup = soundMixer;
+            s.source.outputAudioMixerGroup = s.outputAudioMixerGroup;
         }
 
         foreach (Sound m in music)
@@ -59,14 +59,15 @@ public class AudioManager : MonoBehaviour
             m.source.loop = m.loop;
             m.source.spatialBlend = m.spatialBlend;
             m.source.dopplerLevel = m.dopplerLevel;
-            m.source.outputAudioMixerGroup = soundMixer;
+            m.source.outputAudioMixerGroup = m.outputAudioMixerGroup;
         }
         //this could be used to play music when a scene loads
-        PlayMusic("BGM"); 
         PlaySound("Fire");
+        PlayMusic("titleMusic");
+        
         
         //this will play the music sound with the name BGM
-        //SceneMusic(); alter this function to play different background music depending on scene
+        //SceneMusic(); //alter this function to play different background music depending on scene
     }
 
 
@@ -82,18 +83,16 @@ public class AudioManager : MonoBehaviour
 
     public void SceneMusic()
     {
-        StopAll();
+        //StopAll();
         Scene scene = SceneManager.GetActiveScene();
         currentScene = scene;
 
-        if(scene.name == "Menu")
-        {
-            PlayMusic("titleMusic");
-        }
-        if(scene.name == "MainScene")
-        {
-            PlayMusic("inGameMusic");
-        }
+        if(scene.name == "Menu") PlayMusic("titleMusic");
+        
+        if(scene.name == "Level1") PlayMusic("level1");
+        if(scene.name == "Level2") PlayMusic("level2");
+        if(scene.name == "Level3") PlayMusic("level3");
+
     }
 
     //this could be used to play music when a scene loads

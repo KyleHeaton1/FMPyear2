@@ -1312,6 +1312,8 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 1
+    maxDistance: 150
+    rolloffMode: 1
     loop: 1
     source: {fileID: 0}
   music:
@@ -1322,6 +1324,8 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 0.478
+    maxDistance: 50
+    rolloffMode: 1
     loop: 1
     source: {fileID: 0}
   musicMixer: {fileID: -3020269314422819713, guid: 20e3b4152ed5ec74a955bd5eab71c050,

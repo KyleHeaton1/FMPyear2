@@ -16,6 +16,8 @@ public class AudioManager : MonoBehaviour
     public AudioMixerGroup soundMixer;
     Scene currentScene;
 
+    public bool enviromentalNoises;
+
     public static AudioManager instance;
     // Start is called before the first frame update
     void Start()
@@ -64,6 +66,12 @@ public class AudioManager : MonoBehaviour
         //this could be used to play music when a scene loads
         PlaySound("Fire");
         PlayMusic("titleMusic");
+
+        if(enviromentalNoises) 
+        {
+            PlaySound("city");
+            PlaySound("ocean");
+        }
         
         
         //this will play the music sound with the name BGM

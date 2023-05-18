@@ -1252,13 +1252,19 @@ MonoBehaviour:
   _startingHealth: 1
   _currentHealth: 0
   _healthBar: {fileID: 0}
+  _audio: {fileID: 7359597778079608984}
   _deathDelay: 5
   _specficObjectToDestroy: {fileID: 0}
   _autoDeleteOnDeath: 1
   _removeColliderOnDeath: 0
   _dead: 0
   _heathZero: 0
+  _isBuilding: 0
+  _isFrog: 0
+  _isAI: 1
   _destructible: 1
+  _gmToMeshRemove: []
+  _removeMeshRenderer: 0
   _originalObject: {fileID: 8255508162508418612}
   _destructParts:
   - {fileID: 1728101805790077121}
@@ -1279,6 +1285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbdf005bff55b1146a13f62a5156e6f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canAdd: 1
   _scoreToAdd: 10
 --- !u!114 &-1802942750208047435
 MonoBehaviour:
@@ -1324,7 +1331,7 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 0.478
-    maxDistance: 50
+    maxDistance: 20
     rolloffMode: 1
     loop: 1
     source: {fileID: 0}
@@ -1332,3 +1339,4 @@ MonoBehaviour:
     type: 2}
   soundMixer: {fileID: -4387434332411123013, guid: 20e3b4152ed5ec74a955bd5eab71c050,
     type: 2}
+  isAlive: 1

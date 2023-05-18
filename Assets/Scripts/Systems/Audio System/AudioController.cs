@@ -13,6 +13,7 @@ public class AudioController : MonoBehaviour
     public AudioMixerGroup musicMixer;
     public AudioMixerGroup soundMixer;
     Scene currentScene;
+    [HideInInspector] public bool isAlive = true;
 
 
     // Start is called before the first frame update
@@ -29,7 +30,9 @@ public class AudioController : MonoBehaviour
             s.source.loop = s.loop;
             s.source.spatialBlend = s.spatialBlend;
             s.source.dopplerLevel = s.dopplerLevel;
-            s.source.outputAudioMixerGroup = soundMixer;
+            s.source.outputAudioMixerGroup = s.outputAudioMixerGroup;
+            s.source.rolloffMode = s.rolloffMode;
+            s.source.maxDistance = s.maxDistance;
         }
 
         foreach (Sound m in music)
@@ -49,7 +52,10 @@ public class AudioController : MonoBehaviour
         //PlayMusic("BGM"); //this will play the music sound with the name BGM
         //SceneMusic(); alter this function to play different background music depending on scene
         
-        PlaySound("heli");
+
+            PlaySound("heli");
+            PlaySound("spider");
+        
 
         //use these for individual sounds
         //PlayOneShotSound("smg"); Plays oneshot sound. Use for overlapping audio such as gunshots
@@ -62,6 +68,11 @@ public class AudioController : MonoBehaviour
         // {
         //     SceneMusic();
         // }
+
+        if(!isAlive)
+        {
+            StopAll();
+        }
     }
 
     //DANGER THIS WILL STOP ALL BUT ONESHOT SOUNDS

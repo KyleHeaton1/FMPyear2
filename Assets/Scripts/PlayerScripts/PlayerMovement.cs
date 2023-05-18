@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] int _laserTickDamage;
     [SerializeField] Transform _firePoint;
     [SerializeField] GameObject _laserPoint;
-    [SerializeField] GameObject _laserUI;
+    [SerializeField] public GameObject _laserUI;
     [SerializeField] GameObject _laserVFXObj;
     [SerializeField] LineRenderer _line;
     [SerializeField] Camera _laserCamera;
@@ -196,6 +196,7 @@ public class PlayerMovement : MonoBehaviour
                 else _anim.SetFloat("speed", 1f);
 
                 _state = _States.land;
+                 FindObjectOfType<AudioManager>().PlayOneShotSound("land");
                 _anim.SetInteger("state", 3);
                 _anim.SetBool("gpToLand" ,true);
 
@@ -264,6 +265,8 @@ public class PlayerMovement : MonoBehaviour
             Jump();
 
             _state = _States.jump;
+
+            FindObjectOfType<AudioManager>().PlayOneShotSound("jump");
 
             //waits the cooldown time so we cant just straight after we just finished one
             Invoke("ResetJump", _jumpCooldown);
@@ -421,6 +424,7 @@ public class PlayerMovement : MonoBehaviour
         _dashRefreshTimer = _baseDashTime;
         _grounded = false;
         _moveSpeed = _dashForce;
+        FindObjectOfType<AudioManager>().PlayOneShotSound("dash");
     }
     void DashReplen()
     {
@@ -527,7 +531,7 @@ public class PlayerMovement : MonoBehaviour
         Debug.DrawRay(_firePoint.transform.position, _laserCamera.transform.forward, Color.green);
         _line.enabled = true;
     }
-    void StopLaser()
+    public void StopLaser()
     {
         _activeLaser = _line.enabled =false;
         _laserVFXObj.SetActive(false);

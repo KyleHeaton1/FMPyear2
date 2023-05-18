@@ -26,10 +26,14 @@ public class ScoreSystem : MonoBehaviour
 
     [HideInInspector] public bool _failed = false;
     [HideInInspector] public bool _won = false;
+
     
     void Start()
     {
         if(!_addTime) _currentTime = _timeLimit;
+
+        FindObjectOfType<AudioManager>().PlayMusic("ocean");
+        FindObjectOfType<AudioManager>().PlayMusic("city");
     }
 
     public void AddScore(int _addedScore)
@@ -53,6 +57,8 @@ public class ScoreSystem : MonoBehaviour
         TimeSytem();
 
         if(_scoreText != null) _scoreText.text = "" + _score;
+
+        
     }
 
     void Finished(bool _hasWon)
@@ -89,6 +95,16 @@ public class ScoreSystem : MonoBehaviour
         _currentMins = (int)Mathf.Floor(_currentTime / 60);
         _currentSeconds = (int)(_currentTime % 60);
 
-        if(_timeText != null) _timeText.text = "" + _currentMins + ":" + _currentSeconds;
+        string _minsString = "";
+
+        if(_currentMins <10) _minsString = "0" + _currentMins;
+        else _minsString = _currentMins.ToString();
+
+
+        string _secondsString = "";
+        if(_currentSeconds<10) _secondsString= "0" + _currentSeconds;
+        else _secondsString = _currentSeconds.ToString();
+
+        if(_timeText != null) _timeText.text = "" + _minsString + ":" + _secondsString;
     }
 }

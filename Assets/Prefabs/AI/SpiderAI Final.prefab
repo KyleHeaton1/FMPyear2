@@ -1761,6 +1761,7 @@ GameObject:
   - component: {fileID: 1947904692307381655}
   - component: {fileID: 1947904692307381652}
   - component: {fileID: 1470550003918404082}
+  - component: {fileID: 8257711657337014886}
   m_Layer: 0
   m_Name: Body
   m_TagString: agent
@@ -1933,11 +1934,19 @@ MonoBehaviour:
   _startingHealth: 15
   _currentHealth: 0
   _healthBar: {fileID: 0}
+  _audio: {fileID: 8257711657337014886}
   _deathDelay: 7
+  _specficObjectToDestroy: {fileID: 0}
   _autoDeleteOnDeath: 1
+  _removeColliderOnDeath: 0
   _dead: 0
   _heathZero: 0
+  _isBuilding: 0
+  _isFrog: 0
+  _isAI: 1
   _destructible: 1
+  _gmToMeshRemove: []
+  _removeMeshRenderer: 0
   _originalObject: {fileID: 182595579494748600}
   _destructParts:
   - {fileID: 7715286436062228848}
@@ -1958,7 +1967,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbdf005bff55b1146a13f62a5156e6f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canAdd: 1
   _scoreToAdd: 15
+--- !u!114 &8257711657337014886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1947904692307381654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02167ff844474d341aaede08b6d47825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sounds:
+  - name: spider
+    clip: {fileID: 8300000, guid: 77101c2437e1e324988f03e8f5f61b40, type: 3}
+    outputAudioMixerGroup: {fileID: -4387434332411123013, guid: 20e3b4152ed5ec74a955bd5eab71c050,
+      type: 2}
+    volume: 1
+    pitch: 1
+    spatialBlend: 1
+    dopplerLevel: 0
+    maxDistance: 50
+    rolloffMode: 1
+    loop: 0
+    source: {fileID: 0}
+  music: []
+  musicMixer: {fileID: -3020269314422819713, guid: 20e3b4152ed5ec74a955bd5eab71c050,
+    type: 2}
+  soundMixer: {fileID: -4387434332411123013, guid: 20e3b4152ed5ec74a955bd5eab71c050,
+    type: 2}
+  isAlive: 1
 --- !u!1 &1947904692340322259
 GameObject:
   m_ObjectHideFlags: 0

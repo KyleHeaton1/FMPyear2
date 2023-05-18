@@ -16,6 +16,8 @@ public class DamageBox : MonoBehaviour
         if(other.gameObject.tag == "Buildings")
         {
             GameObject _vfx = Instantiate(_attackRubble, this.transform.position, this.transform.rotation);
+                        FindObjectOfType<AudioManager>().StopSpecific("impact");
+            if(!_isGPDamage)FindObjectOfType<AudioManager>().PlayOneShotSound("impact");
         }
 
     }

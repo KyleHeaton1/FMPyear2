@@ -9,6 +9,8 @@ public class Health : MonoBehaviour
     [SerializeField] private int _startingHealth;
     [SerializeField] public int  _currentHealth;
     [SerializeField] private ValueSlider _healthBar;
+
+    public AudioController _audio;
     [Space(10)]
 
     [Header ("Death Properties")]
@@ -18,7 +20,13 @@ public class Health : MonoBehaviour
     [SerializeField] private bool _removeColliderOnDeath;
     [HideInInspector] public bool _dead = false;
     [HideInInspector] public bool _heathZero = false;
-    [Space(10)]
+    [Space(10)] 
+
+    [Header ("Sound Properties")]
+    [SerializeField] private bool _isBuilding = false;
+    [SerializeField] private bool _isFrog = false;
+    [SerializeField] private bool _isAI= false;
+    [Space(10)] 
 
     [SerializeField] private bool _destructible;
 
@@ -45,6 +53,23 @@ public class Health : MonoBehaviour
         if(_healthBar != null) _healthBar.SetValue(_currentHealth);
         if(_currentHealth <= 0)
         {
+            if(_isBuilding) 
+            {
+                FindObjectOfType<AudioManager>().StopSpecific("building");
+                FindObjectOfType<AudioManager>().PlayOneShotSound("building");
+                _isBuilding = false;
+            }
+
+            if(_isAI) 
+            {
+                FindObjectOfType<AudioManager>().StopSpecific("explo");
+                FindObjectOfType<AudioManager>().PlayOneShotSound("explo");
+                FindObjectOfType<AudioManager>().StopSpecific("heli");
+                _isAI = false;
+            }
+
+            if(_audio != null)_audio.isAlive = false;
+
             if(_removeMeshRenderer)gameObject.GetComponent<MeshCollider>().enabled = false;
             _heathZero = true;
             Explosion();

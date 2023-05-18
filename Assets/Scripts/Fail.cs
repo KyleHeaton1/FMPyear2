@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class Fail : MonoBehaviour
 {
     [SerializeField] private Health _playerHealth;
+    [SerializeField] private ThirdPersonCameraControl _playerCam;
     [SerializeField] private GameObject _playerMesh;
     [SerializeField] private GameObject _failUI, _winUI;
     [SerializeField] private GameObject _playerRagdoll, _playerWinObj;
@@ -38,11 +39,13 @@ public class Fail : MonoBehaviour
 
     void EndGame()
     {
-        _pm._canInput = _pm._canMove = _pm.enabled = _pm._readyToLaser = _pm._camReady = false;
+        _pm._canInput = _pm._canMove = _pm.enabled = _pm._readyToLaser = _pm._camReady = _playerCam._isLaserMode = false;
         _playerMesh.SetActive(false);
         _deathCam.SetActive(true);
         _tpCam.SetActive(false);
         _laserCam.SetActive(false); 
+        _pm._laserUI.SetActive(false);
+        _pm.StopLaser();
         _rb.mass = 10;
     }
 

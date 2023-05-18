@@ -6,7 +6,7 @@ public class ScoreOnDeath : MonoBehaviour
 {
     Health _health;
     ScoreSystem _scoring;
-    bool _canAdd = true;
+    public bool _canAdd = true;
     [SerializeField] private int _scoreToAdd;
 
     void Start()
@@ -16,11 +16,12 @@ public class ScoreOnDeath : MonoBehaviour
         _scoring = _gm.GetComponent<ScoreSystem>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if(_health._heathZero && _canAdd)
         {
             ScoreToAdd();
+            Debug.Log(gameObject.name);
         }
     }
 

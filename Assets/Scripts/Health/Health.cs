@@ -25,6 +25,10 @@ public class Health : MonoBehaviour
     [ConditionalHide("_destructible", true)]
     [Header ("Destruction Properties")]
 
+    [SerializeField] private GameObject[] _gmToMeshRemove;
+    [ConditionalHide("_destructible", true)]
+    [SerializeField] private bool _removeMeshRenderer;
+    [ConditionalHide("_destructible", true)]
     [SerializeField] private GameObject _originalObject;
     [ConditionalHide("_destructible", true)]
     [SerializeField] private GameObject[] _destructParts;
@@ -41,11 +45,15 @@ public class Health : MonoBehaviour
         if(_healthBar != null) _healthBar.SetValue(_currentHealth);
         if(_currentHealth <= 0)
         {
+            if(_removeMeshRenderer)gameObject.GetComponent<MeshCollider>().enabled = false;
             _heathZero = true;
             Explosion();
             Invoke("ActivateDeath", _deathDelay);
             if(!_removeColliderOnDeath) return;
-            else gameObject.GetComponent<BoxCollider>().enabled = false;
+            else
+            {
+                gameObject.GetComponent<BoxCollider>().enabled = false;
+            }
         }
     }
 
@@ -67,7 +75,9 @@ public class Health : MonoBehaviour
         if(!_destructible)return;
         else
         {
-            _originalObject.SetActive(false);
+            if(!_removeMeshRenderer) _originalObject.SetActive(false);
+            else foreach(GameObject _meshes in _gmToMeshRemove) _meshes.GetComponent<MeshRenderer>().enabled = false; 
+
             foreach (GameObject _piece in _destructParts)
             {
                 _piece.SetActive(true);

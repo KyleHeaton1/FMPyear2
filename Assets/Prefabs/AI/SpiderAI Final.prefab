@@ -1986,7 +1986,7 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 77101c2437e1e324988f03e8f5f61b40, type: 3}
     outputAudioMixerGroup: {fileID: -4387434332411123013, guid: 20e3b4152ed5ec74a955bd5eab71c050,
       type: 2}
-    volume: 1
+    volume: 0.349
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 0

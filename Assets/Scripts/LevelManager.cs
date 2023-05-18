@@ -25,6 +25,7 @@ public class LevelManager : MonoBehaviour
     public void LoadScene(string _scene)
     {
         SceneManager.LoadScene(_scene);
+        
     }
 
     public void Click()

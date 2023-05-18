@@ -1315,7 +1315,7 @@ MonoBehaviour:
   - name: heli
     clip: {fileID: 8300000, guid: 16953fbf6ea3a7a4eb98beddb0c2c5e2, type: 3}
     outputAudioMixerGroup: {fileID: 0}
-    volume: 1
+    volume: 0.255
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 1
@@ -1327,7 +1327,7 @@ MonoBehaviour:
   - name: fuck
     clip: {fileID: 8300000, guid: 16953fbf6ea3a7a4eb98beddb0c2c5e2, type: 3}
     outputAudioMixerGroup: {fileID: 0}
-    volume: 0.513
+    volume: 0
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 0.478

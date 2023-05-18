@@ -81,12 +81,12 @@ public class AudioManager : MonoBehaviour
 
     void Update()
     {
-        /*
+        
         if(SceneManager.GetActiveScene() != currentScene)
         {
             SceneMusic();
         }
-        */
+        
     }
 
     public void SceneMusic()
@@ -95,7 +95,11 @@ public class AudioManager : MonoBehaviour
         Scene scene = SceneManager.GetActiveScene();
         currentScene = scene;
 
-        if(scene.name == "Menu") PlayMusic("titleMusic");
+        if(scene.name == "MainMenu")
+        {
+            PlayMusic("titleMusic");;
+            PlaySound("Fire");
+        }     
         
         if(scene.name == "Level1") PlayMusic("level1");
         if(scene.name == "Level2") PlayMusic("level2");

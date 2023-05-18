@@ -7,7 +7,7 @@ public class Fail : MonoBehaviour
 {
     [SerializeField] private Health _playerHealth;
     [SerializeField] private ThirdPersonCameraControl _playerCam;
-    [SerializeField] private GameObject _playerMesh;
+    [SerializeField] private GameObject _playerMesh, _player;
     [SerializeField] private GameObject _failUI, _winUI;
     [SerializeField] private GameObject _playerRagdoll, _playerWinObj;
     [SerializeField] private GameObject _deathCam, _winCam;
@@ -54,8 +54,6 @@ public class Fail : MonoBehaviour
         _playerRagdoll.SetActive(true);
         _deathCam.SetActive(true);
         if(_processScreen) Invoke("FailScreen", _delay);
-                Cursor.lockState = CursorLockMode.None;
-         Cursor.visible = true;
     }
 
     void Won()
@@ -64,8 +62,6 @@ public class Fail : MonoBehaviour
         _winCam.SetActive(true);
         _playerWinObj.SetActive(true);
         if(_processScreen) Invoke("WinScreen", _delay);
-                Cursor.lockState = CursorLockMode.None;
-         Cursor.visible = true;
     }
 
     void WinScreen()
@@ -74,6 +70,7 @@ public class Fail : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         _winUI.SetActive(true);
+        FindObjectOfType<AudioManager>().StopAll();
     }
 
     void FailScreen()
@@ -82,5 +79,6 @@ public class Fail : MonoBehaviour
         _failUI.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        FindObjectOfType<AudioManager>().StopAll();
     }
 }

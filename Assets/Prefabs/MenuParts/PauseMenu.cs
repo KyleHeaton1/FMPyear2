@@ -8,6 +8,8 @@ public class PauseMenu : MonoBehaviour
     public static bool GameIsPaused = false;
 
     public GameObject pauseMenuUI;
+    public PlayerMovement pm;
+    public ThirdPersonCameraControl cam;
 
     void Start()
     {
@@ -44,6 +46,7 @@ public class PauseMenu : MonoBehaviour
         GameIsPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        pm.enabled = true;
     }
     void Pause()
     {
@@ -51,6 +54,10 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f;
         GameIsPaused = true;
         Cursor.lockState = CursorLockMode.None;
+        cam._isLaserMode = false;
+        pm.enabled = false;
+        pm._laserUI.SetActive(false);
+        pm.StopLaser();
     }
 
     public void LoadMenu()

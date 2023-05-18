@@ -54,6 +54,8 @@ public class Fail : MonoBehaviour
         _playerRagdoll.SetActive(true);
         _deathCam.SetActive(true);
         if(_processScreen) Invoke("FailScreen", _delay);
+                Cursor.lockState = CursorLockMode.None;
+         Cursor.visible = true;
     }
 
     void Won()
@@ -62,12 +64,15 @@ public class Fail : MonoBehaviour
         _winCam.SetActive(true);
         _playerWinObj.SetActive(true);
         if(_processScreen) Invoke("WinScreen", _delay);
+                Cursor.lockState = CursorLockMode.None;
+         Cursor.visible = true;
     }
 
     void WinScreen()
     {
         _processScreen = false;
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         _winUI.SetActive(true);
     }
 
@@ -76,5 +81,6 @@ public class Fail : MonoBehaviour
         _processScreen = false;
         _failUI.SetActive(true);
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }

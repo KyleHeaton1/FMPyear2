@@ -24,7 +24,6 @@ public class Health : MonoBehaviour
 
     [Header ("Sound Properties")]
     [SerializeField] private bool _isBuilding = false;
-    [SerializeField] private bool _isFrog = false;
     [SerializeField] private bool _isAI= false;
     [Space(10)] 
 
@@ -77,7 +76,10 @@ public class Health : MonoBehaviour
             if(!_removeColliderOnDeath) return;
             else
             {
-                gameObject.GetComponent<BoxCollider>().enabled = false;
+                if(GetComponent<BoxCollider>() != null)
+                {
+                    GetComponent<BoxCollider>().enabled = false;
+                }
             }
         }
     }

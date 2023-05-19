@@ -21,7 +21,7 @@ public class ScoreOnDeath : MonoBehaviour
         if(_health._heathZero && _canAdd)
         {
             ScoreToAdd();
-            Debug.Log(gameObject.name);
+            //Debug.Log(gameObject.name);
         }
     }
 

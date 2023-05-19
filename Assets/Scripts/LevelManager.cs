@@ -6,12 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
-    public GameObject _startButton;
-
-    void Awake()
-    {
-        _startButton.GetComponent<Button>().Select();
-    }
     public void Select(GameObject _current)
     {
         _current.GetComponent<Button>().Select();

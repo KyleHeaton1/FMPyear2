@@ -15,7 +15,7 @@ public class ScoreSystem : MonoBehaviour
     [ConditionalHide("_useTimeSystem", true)]
     [Header ("Timer Properties")]
 
-    [SerializeField] private TMP_Text _timeText;
+    public TMP_Text _timeText;
     [ConditionalHide("_useTimeSystem", true)]
     [SerializeField] private float _timeLimit;
     [ConditionalHide("_useTimeSystem", true)]
@@ -23,17 +23,25 @@ public class ScoreSystem : MonoBehaviour
     float _currentTime;
     int _currentSeconds;
     int _currentMins;
-
+    
+     public bool _useTime = true;
     [HideInInspector] public bool _failed = false;
     [HideInInspector] public bool _won = false;
+
+    
+    AudioManager audioManager;
 
     
     void Start()
     {
         if(!_addTime) _currentTime = _timeLimit;
 
-        FindObjectOfType<AudioManager>().PlayMusic("ocean");
-        FindObjectOfType<AudioManager>().PlayMusic("city");
+        audioManager = FindObjectOfType<AudioManager>();
+        if(audioManager != null)
+        {
+            audioManager.PlaySound("ocean");
+            audioManager.PlaySound("city");
+        }
     }
 
     public void AddScore(int _addedScore)
@@ -92,19 +100,23 @@ public class ScoreSystem : MonoBehaviour
             }
         }
 
-        _currentMins = (int)Mathf.Floor(_currentTime / 60);
-        _currentSeconds = (int)(_currentTime % 60);
+        if(_useTime)
+        {
+            _currentMins = (int)Mathf.Floor(_currentTime / 60);
+            _currentSeconds = (int)(_currentTime % 60);
 
-        string _minsString = "";
+            string _minsString = "";
 
-        if(_currentMins <10) _minsString = "0" + _currentMins;
-        else _minsString = _currentMins.ToString();
+            if(_currentMins <10) _minsString = "0" + _currentMins;
+            else _minsString = _currentMins.ToString();
 
 
-        string _secondsString = "";
-        if(_currentSeconds<10) _secondsString= "0" + _currentSeconds;
-        else _secondsString = _currentSeconds.ToString();
+            string _secondsString = "";
+            if(_currentSeconds<10) _secondsString= "0" + _currentSeconds;
+            else _secondsString = _currentSeconds.ToString();
 
-        if(_timeText != null) _timeText.text = "" + _minsString + ":" + _secondsString;
+            if(_timeText != null) _timeText.text = "" + _minsString + ":" + _secondsString;
+        }
+    
     }
 }

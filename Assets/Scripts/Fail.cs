@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class Fail : MonoBehaviour
 {
@@ -19,6 +20,8 @@ public class Fail : MonoBehaviour
     bool _processScreen = true;
     bool _hasWonGame = false;
     bool canPlaySound = true;
+
+    public TMP_Text[] _time; 
 
     void Update()
     {
@@ -48,6 +51,8 @@ public class Fail : MonoBehaviour
         _pm._laserUI.SetActive(false);
         _pm.StopLaser();
         _rb.mass = 10;
+        _scoreSystem._useTime = false;
+        foreach(TMP_Text time in _time) time.text = "Time: " + _scoreSystem._timeText.text;
     }
 
     void Failed()

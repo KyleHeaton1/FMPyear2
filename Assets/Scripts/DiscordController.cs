@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Discord;
+using UnityEngine.SceneManagement; 
 
 public class DiscordController : MonoBehaviour
 {
@@ -16,6 +17,8 @@ public class DiscordController : MonoBehaviour
     public Discord.Discord discord;
 
     private long time;
+
+    Scene currentScene;
 
     void Awake() 
     {
@@ -50,6 +53,14 @@ public class DiscordController : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Scene scene = SceneManager.GetActiveScene();
+        currentScene = scene;
+        if(scene.name == "MainMenu")  details = "On the main menu";
+        if(scene.name == "Level1") details = "Playing level 1";
+        if(scene.name == "Level2")details = "Playing level 2";
+        if(scene.name == "Level3") details = "Playing level 3";
+        if(scene.name == "FinalBoss") details = "Fighting J.O.H.N";
     }
 
     void LateUpdate() 

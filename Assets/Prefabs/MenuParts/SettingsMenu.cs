@@ -10,12 +10,15 @@ public class SettingsMenu : MonoBehaviour {
     
     public AudioMixer audioMixer;
     public Slider master, music, sfx;
+    public Toggle fullScreenToggle, UItoggle;
 
     void Start ()
     {
         LoadPrefs();
         List<string> options = new List<string>();
     }
+
+
     public void SetEffectsVolume()
     {
         audioMixer.SetFloat("SfxVolume", sfx.value);
@@ -37,6 +40,7 @@ public class SettingsMenu : MonoBehaviour {
     public void SetFullscreen (bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
+
     }
     void LoadPrefs()
     {

@@ -61,8 +61,8 @@ public class PauseMenu : MonoBehaviour
     }
 
     public void LoadMenu()
-
     {
+        FindObjectOfType<AudioManager>().StopAll();
         SceneManager.LoadScene("MainMenu");
     }
 

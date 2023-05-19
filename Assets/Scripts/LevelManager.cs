@@ -25,13 +25,13 @@ public class LevelManager : MonoBehaviour
     public void LoadScene(string _scene)
     {
         SceneManager.LoadScene(_scene);
-        
     }
 
     public void Click()
     {
         FindObjectOfType<AudioManager>().PlayOneShotSound("click");
     }
+
     // Start is called before the first frame update
     void Start()
     {

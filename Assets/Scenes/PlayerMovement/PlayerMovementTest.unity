@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 2160.1162, g: 2264.537, b: 3287.9375, a: 1}
+  m_IndirectSpecularColor: {r: 1567.5693, g: 1349.2197, b: 1532.4551, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5057,6 +5057,7 @@ MonoBehaviour:
   _theEnemy: {fileID: 1947904692451233101, guid: 52965c71f2e678344bda52934c6f5b50,
     type: 3}
   _timeBetweenSpawn: 20
+  _maxEnemies: 0
 --- !u!1 &241700873
 GameObject:
   m_ObjectHideFlags: 0
@@ -7840,6 +7841,8 @@ MonoBehaviour:
   _timeText: {fileID: 1057698833}
   _timeLimit: 30
   _addTime: 1
+  _failed: 0
+  _won: 0
 --- !u!4 &439186385
 Transform:
   m_ObjectHideFlags: 0
@@ -9298,6 +9301,7 @@ MonoBehaviour:
   _jumpForce: 12
   _jumpCooldown: 2.3
   _airMultiplier: 3
+  _canMove: 0
   _dashForce: 30
   _dashCooldown: 0.5
   _dashAmount: 2
@@ -9306,6 +9310,7 @@ MonoBehaviour:
   _whatIsGround:
     serializedVersion: 2
     m_Bits: 8
+  _grounded: 0
   _orientation: {fileID: 673839663}
   _attackHitBox: {fileID: 1052160118}
   _gpHitBox: {fileID: 459940310}
@@ -9335,8 +9340,13 @@ MonoBehaviour:
   _energyBar: {fileID: 812544545}
   _startingEnergy: 577777
   _currentEnergy: 0
+  _readyToLaser: 0
   _camControl: {fileID: 1823688470}
   _anim: {fileID: 919132148501439714}
+  _playerHealth: {fileID: 0}
+  _damageMat: {fileID: 0}
+  _canInput: 1
+  _camReady: 1
   _state: 0
 --- !u!54 &514713128
 Rigidbody:
@@ -9387,11 +9397,19 @@ MonoBehaviour:
   _startingHealth: 100
   _currentHealth: 0
   _healthBar: {fileID: 6333489595531410770}
+  _audio: {fileID: 0}
   _deathDelay: 0
+  _specficObjectToDestroy: {fileID: 0}
   _autoDeleteOnDeath: 0
+  _removeColliderOnDeath: 0
   _dead: 0
   _heathZero: 0
+  _isBuilding: 0
+  _isFrog: 0
+  _isAI: 0
   _destructible: 0
+  _gmToMeshRemove: []
+  _removeMeshRenderer: 0
   _originalObject: {fileID: 0}
   _destructParts: []
   _minExploForce: 0
@@ -19415,11 +19433,19 @@ MonoBehaviour:
   _startingHealth: 100
   _currentHealth: 0
   _healthBar: {fileID: 0}
+  _audio: {fileID: 0}
   _deathDelay: 0
+  _specficObjectToDestroy: {fileID: 0}
   _autoDeleteOnDeath: 1
+  _removeColliderOnDeath: 0
   _dead: 0
   _heathZero: 0
+  _isBuilding: 0
+  _isFrog: 0
+  _isAI: 0
   _destructible: 0
+  _gmToMeshRemove: []
+  _removeMeshRenderer: 0
   _originalObject: {fileID: 0}
   _destructParts: []
   _minExploForce: 0
@@ -24640,54 +24666,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1445405212}
   m_Mesh: {fileID: 3923330773634410868, guid: e065c94c32e9e63469511b82b6210a6c, type: 3}
---- !u!1 &1447612618
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1447612620}
-  - component: {fileID: 1447612619}
-  m_Layer: 0
-  m_Name: Discord
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1447612619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447612618}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c83983196a219e4a9ae6e540dd7d7b0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  applicationID: 1098657012050575370
-  details: john
-  largeImage: game_logo
-  largeText: Frogzilla
---- !u!4 &1447612620
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447612618}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.4617436, y: 1.5538398, z: 1.8834978}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 16
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1447650808
 GameObject:
   m_ObjectHideFlags: 0
@@ -34353,7 +34331,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941466811}
-  m_LocalRotation: {x: 0.071516335, y: -0.100898854, z: 0.011486841, w: 0.9922565}
+  m_LocalRotation: {x: 0.071516335, y: -0.10089889, z: 0.011486843, w: 0.9922565}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -41686,11 +41664,19 @@ MonoBehaviour:
   _startingHealth: 100
   _currentHealth: 0
   _healthBar: {fileID: 0}
+  _audio: {fileID: 0}
   _deathDelay: 5
+  _specficObjectToDestroy: {fileID: 0}
   _autoDeleteOnDeath: 0
+  _removeColliderOnDeath: 0
   _dead: 0
   _heathZero: 0
+  _isBuilding: 0
+  _isFrog: 0
+  _isAI: 0
   _destructible: 1
+  _gmToMeshRemove: []
+  _removeMeshRenderer: 0
   _originalObject: {fileID: 654513152517122197}
   _destructParts:
   - {fileID: 6121941842401814949}
@@ -43189,6 +43175,77 @@ Transform:
   m_Father: {fileID: 2496842484465171060}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1407335597800112627
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 2
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1407335598643712313, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_Name
+      value: Discord
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.4617436
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5538398
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.8834978
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1407335598643712319, guid: 933b492f4b094b641885ead2eabbf9a1,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_AddedGameObjects: []
+  m_SourcePrefab: {fileID: 100100000, guid: 933b492f4b094b641885ead2eabbf9a1, type: 3}
 --- !u!33 &1411625806094078120
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -50108,11 +50165,19 @@ MonoBehaviour:
   _startingHealth: 10
   _currentHealth: 0
   _healthBar: {fileID: 0}
+  _audio: {fileID: 0}
   _deathDelay: 5
+  _specficObjectToDestroy: {fileID: 0}
   _autoDeleteOnDeath: 1
+  _removeColliderOnDeath: 0
   _dead: 0
   _heathZero: 0
+  _isBuilding: 0
+  _isFrog: 0
+  _isAI: 0
   _destructible: 1
+  _gmToMeshRemove: []
+  _removeMeshRenderer: 0
   _originalObject: {fileID: 1319570868}
   _destructParts:
   - {fileID: 3021143142093430990}
@@ -54112,6 +54177,7 @@ MonoBehaviour:
   _theEnemy: {fileID: 9101807002601666594, guid: 1ab71c6d349ee154bbf00d3ed57924bb,
     type: 3}
   _timeBetweenSpawn: 6
+  _maxEnemies: 0
 --- !u!4 &3948415587538225492
 Transform:
   m_ObjectHideFlags: 0
@@ -66008,6 +66074,8 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 0
+    maxDistance: 50
+    rolloffMode: 1
     loop: 0
     source: {fileID: 0}
   music:
@@ -66019,12 +66087,15 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 1
     dopplerLevel: 0
+    maxDistance: 50
+    rolloffMode: 1
     loop: 1
     source: {fileID: 0}
   musicMixer: {fileID: -3020269314422819713, guid: 20e3b4152ed5ec74a955bd5eab71c050,
     type: 2}
   soundMixer: {fileID: -4387434332411123013, guid: 20e3b4152ed5ec74a955bd5eab71c050,
     type: 2}
+  enviromentalNoises: 0
 --- !u!23 &6381285848940877167
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -82207,6 +82278,7 @@ MonoBehaviour:
   _theEnemy: {fileID: 9150186558104133363, guid: 0e8c29522a348ee49a4ec71ef358720f,
     type: 3}
   _timeBetweenSpawn: 5
+  _maxEnemies: 0
 --- !u!23 &8859005527904073797
 MeshRenderer:
   m_ObjectHideFlags: 0

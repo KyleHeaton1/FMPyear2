@@ -18,6 +18,7 @@ public class Fail : MonoBehaviour
     [SerializeField] private Rigidbody _rb;
     bool _processScreen = true;
     bool _hasWonGame = false;
+    bool canPlaySound = true;
 
     void Update()
     {
@@ -51,6 +52,8 @@ public class Fail : MonoBehaviour
 
     void Failed()
     {
+        if(canPlaySound) FindObjectOfType<AudioManager>().PlayOneShotSound("Fail");
+        canPlaySound = false;
         _playerRagdoll.SetActive(true);
         _deathCam.SetActive(true);
         if(_processScreen) Invoke("FailScreen", _delay);
@@ -58,6 +61,8 @@ public class Fail : MonoBehaviour
 
     void Won()
     {
+        if(canPlaySound) FindObjectOfType<AudioManager>().PlayOneShotSound("Win");
+        canPlaySound = false;
         _hasWonGame = true;
         _winCam.SetActive(true);
         _playerWinObj.SetActive(true);

@@ -19,7 +19,7 @@ public class load : MonoBehaviour
     
     IEnumerator WaitForEnd()
     {
-        yield return new WaitForSeconds(1);
+        //yield return new WaitForSeconds();
         anim.SetBool("fade", true);
         yield return new WaitForSeconds(time);
         //if(loadCurernt) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

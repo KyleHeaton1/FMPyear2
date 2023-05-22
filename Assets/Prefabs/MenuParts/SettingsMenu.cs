@@ -18,6 +18,11 @@ public class SettingsMenu : MonoBehaviour {
         List<string> options = new List<string>();
     }
 
+    void Update()
+    {
+       Cursor.visible = true;
+    }
+
 
     public void SetEffectsVolume()
     {

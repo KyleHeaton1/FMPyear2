@@ -41,6 +41,9 @@ public class Health : MonoBehaviour
     [SerializeField] private GameObject[] _destructParts;
     [ConditionalHide("_destructible", true)]
     [SerializeField] private float _minExploForce, _maxExploForce, _exploForceRadius;
+
+    [SerializeField] private bool _isBoss;
+    [SerializeField] private Fail _fail;
     
     void Start()
     {
@@ -52,6 +55,8 @@ public class Health : MonoBehaviour
         if(_healthBar != null) _healthBar.SetValue(_currentHealth);
         if(_currentHealth <= 0)
         {
+            if(_isBoss) _fail._hasWonGame = true;
+
             if(_isBuilding) 
             {
                 FindObjectOfType<AudioManager>().StopSpecific("building");

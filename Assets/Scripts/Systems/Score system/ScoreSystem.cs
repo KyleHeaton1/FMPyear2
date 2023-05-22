@@ -24,7 +24,7 @@ public class ScoreSystem : MonoBehaviour
     int _currentSeconds;
     int _currentMins;
     
-     public bool _useTime = true;
+    public bool _useTime = true;
     [HideInInspector] public bool _failed = false;
     [HideInInspector] public bool _won = false;
 

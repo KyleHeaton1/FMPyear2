@@ -13,7 +13,7 @@ public class DamageBox : MonoBehaviour
     {
         Health _destructHealth = other.gameObject.GetComponent<Health>();
         if(_destructHealth != null) _destructHealth.TakeDamage(_damageBoxDamage);
-        if(other.gameObject.tag == "Buildings")
+        if(other.gameObject.tag == "Buildings" ||other.gameObject.tag == "agent")
         {
             if(_attackRubble!= null){GameObject _vfx = Instantiate(_attackRubble, this.transform.position, this.transform.rotation);}
             FindObjectOfType<AudioManager>().StopSpecific("impact");

@@ -8,6 +8,7 @@ public class load : MonoBehaviour
     public Animator anim;
     public float time;
     string _scene;
+    public bool final;
     // Start is called before the first frame update
 
     public void Begin(string _sceneName)
@@ -19,8 +20,13 @@ public class load : MonoBehaviour
     
     IEnumerator WaitForEnd()
     {
-        //yield return new WaitForSeconds();
-        anim.SetBool("fade", true);
+        if(!final){anim.SetBool("fade", true);}
+        else
+        {
+            yield return new WaitForSeconds(50);
+            anim.SetBool("fade", true);    
+        }
+        Debug.Log("fard");
         yield return new WaitForSeconds(time);
         //if(loadCurernt) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         FindObjectOfType<AudioManager>().StopAll();

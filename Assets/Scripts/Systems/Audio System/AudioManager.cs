@@ -105,6 +105,7 @@ public class AudioManager : MonoBehaviour
         if(scene.name == "Level2") PlayMusic("level2");
         if(scene.name == "Level3") PlayMusic("level3");
         if(scene.name == "FinalBoss") PlayMusic("finalBoss");
+         if(scene.name == "Credits") PlayMusic("credits");
 
     }
 

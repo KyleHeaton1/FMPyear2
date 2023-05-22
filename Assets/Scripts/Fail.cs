@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class Fail : MonoBehaviour
 {
@@ -17,9 +18,11 @@ public class Fail : MonoBehaviour
     [SerializeField] private PlayerMovement _pm;
     [SerializeField] private float _delay;
     [SerializeField] private Rigidbody _rb;
+    [SerializeField] private Animator _anim;
     bool _processScreen = true;
-    bool _hasWonGame = false;
+    [HideInInspector] public bool _hasWonGame = false;
     bool canPlaySound = true;
+    public bool _final;
 
     public TMP_Text[] _time; 
 
@@ -52,7 +55,7 @@ public class Fail : MonoBehaviour
         _pm.StopLaser();
         _rb.mass = 10;
         _scoreSystem._useTime = false;
-        foreach(TMP_Text time in _time) time.text = "Time: " + _scoreSystem._timeText.text;
+        if(_time != null) foreach(TMP_Text time in _time) time.text = "Time: " + _scoreSystem._timeText.text;
     }
 
     void Failed()
@@ -66,12 +69,18 @@ public class Fail : MonoBehaviour
 
     void Won()
     {
+         Scene scene = SceneManager.GetActiveScene();
         if(canPlaySound) FindObjectOfType<AudioManager>().PlayOneShotSound("Win");
         canPlaySound = false;
         _hasWonGame = true;
         _winCam.SetActive(true);
         _playerWinObj.SetActive(true);
-        if(_processScreen) Invoke("WinScreen", _delay);
+        if(!_final)if(_processScreen) Invoke("WinScreen", _delay);
+        if(_final && scene.name == "FinalBoss")
+        {
+            _anim.SetBool("fade", true); 
+            Invoke("CreditsLoad", _delay);
+        } 
     }
 
     void WinScreen()
@@ -90,5 +99,11 @@ public class Fail : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         FindObjectOfType<AudioManager>().StopAll();
+    }
+
+    void CreditsLoad()
+    {
+        FindObjectOfType<AudioManager>().StopAll();
+        SceneManager.LoadScene("Credits");
     }
 }

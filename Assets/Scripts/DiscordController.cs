@@ -60,7 +60,7 @@ public class DiscordController : MonoBehaviour
         if(scene.name == "Level1") details = "Playing level 1";
         if(scene.name == "Level2")details = "Playing level 2";
         if(scene.name == "Level3") details = "Playing level 3";
-        if(scene.name == "FinalBoss") details = "Fighting J.O.H.N";
+        if(scene.name == "FinalBoss") details = "Fighting John Oil";
     }
 
     void LateUpdate() 

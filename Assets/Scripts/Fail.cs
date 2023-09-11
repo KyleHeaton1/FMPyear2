@@ -69,7 +69,7 @@ public class Fail : MonoBehaviour
 
     void Won()
     {
-         Scene scene = SceneManager.GetActiveScene();
+        Scene scene = SceneManager.GetActiveScene();
         if(canPlaySound) FindObjectOfType<AudioManager>().PlayOneShotSound("Win");
         canPlaySound = false;
         _hasWonGame = true;
